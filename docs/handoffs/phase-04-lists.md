@@ -11,7 +11,7 @@
 - `16c17c7` — Add original empty-state SVGs so empty lists stay kind, not No data.
 - `3b74a5d` — Load Today, Tomorrow, and Registry from the database so seeded tasks land in the right subset.
 - `27db2e2` — Add a guarded dev seed so visual QA has Personal and Work rows without capture.
-- *(this file’s commit)* — Record the Phase 4 lists handoff so a cold session can verify the slice.
+- `6fd4a06` — Record the Phase 4 lists handoff so a cold session can verify the slice.
 
 ## Files touched
 
@@ -21,7 +21,7 @@
 - `components/tasks/add-row.tsx` — dashed Swan chrome, disabled input, no submit
 - `components/tasks/task-list.tsx` — Personal then Work sections; completed-today well
 - `components/empty-states/today.svg`, `tomorrow.svg`, `registry.svg` — original geometry, pill contact shadow, no owl
-- `components/empty-states/empty-state.tsx` — Headline + Wolf line + primary CTA (no save)
+- `components/empty-states/empty-state.tsx` — Headline + Wolf line + primary CTA (no save); SVG via `next/image`
 - `types/svg.d.ts` — SVG module type
 - `app/(app)/today/page.tsx`, `tomorrow/page.tsx`, `registry/page.tsx` — server-load lists
 - `components/nav/app-header.tsx` — inert streak pill `0`
