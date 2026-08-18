@@ -1,16 +1,28 @@
 import type { Metadata } from "next";
-import { PlaceholderScreen } from "../placeholder-screen";
+import { EmptyState } from "@/components/empty-states/empty-state";
+import { TaskList } from "@/components/tasks/task-list";
+import { listIncomplete, requireUserId } from "@/lib/tasks/queries";
 
 export const metadata: Metadata = {
   title: "Tomorrow",
 };
 
-export default function TomorrowPage() {
+export default async function TomorrowPage() {
+  const userId = await requireUserId();
+  const tasks = await listIncomplete(userId, "tomorrow");
+
   return (
-    <PlaceholderScreen
-      title="Tomorrow"
-      line="Lay it out tonight so morning-you already knows."
-      cta="Plan tomorrow."
-    />
+    <main className="list-screen">
+      <h1 className="list-screen__title">Tomorrow</h1>
+      {tasks.length === 0 ? (
+        <EmptyState
+          mark="tomorrow"
+          headline="Tonight is open."
+          line="Lay it out tonight so morning-you already knows."
+          cta="Plan tomorrow."
+        />
+      ) : null}
+      <TaskList tasks={tasks} />
+    </main>
   );
 }

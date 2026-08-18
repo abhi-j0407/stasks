@@ -12,6 +12,9 @@ export function AppHeader({ todayIso, tomorrowIso }: AppHeaderProps) {
         <span>Today · {formatCaptionDate(todayIso)}</span>
         <span>Tomorrow · {formatCaptionDate(tomorrowIso)}</span>
       </p>
+      <p className="app-header__streak" aria-label="Streak 0">
+        0
+      </p>
     </header>
   );
 }
