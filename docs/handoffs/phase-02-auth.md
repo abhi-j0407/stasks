@@ -9,7 +9,7 @@
 - `f72c178` — Add Auth.js with Google and a JWT session so allowlist can run without a database.
 - `f35cc41` — Add Polar sign-in and denied screens so visitors meet kind DESIGN.md copy.
 - `1f9d523` — Gate app routes behind a session so logged-out visitors never see lists.
-- (handoff commit hash filled after this file lands)
+- `d6cea9f` — Record the Phase 2 auth handoff so a cold session can verify the gate.
 
 ## Files touched
 
