@@ -7,31 +7,30 @@
 ## Commits
 
 - `5a83247` — Start the repo with frozen product and design specs so implementation has a source of truth. (`main` only; docs + `.impeccable/`)
-- Scaffold commit pending on this branch.
+- `c586468` — Add a Next.js App Router app so later phases have a running shell.
+- Tokens + font (this commit) — Load Nunito and DESIGN.md tokens so the Polar shell matches the frozen visual system.
 
-## Files touched (so far)
+## Files touched
 
-- Next.js App Router scaffold at repo root (`app/`, `package.json`, ESLint, Tailwind, TypeScript)
-- `.env.example` (empty keys from MASTER.md)
-- `.gitignore` (`.env*` with `!.env.example`)
-- Root `README.md` (install / dev, personal-accounts note, pointer to `docs/`)
+- `app/layout.tsx` — Nunito 400/800 via `next/font/google`, `--font-nunito`
+- `app/globals.css` — full DESIGN.md palette, §3 type scale, radii, spacing, lips, motion
+- `licenses/OFL-Nunito.txt`
 
 ## What works
 
-- `npm install` / `npm run dev` should start the default empty App Router app (tokens, chrome, and PWA not in yet).
+- Polar canvas (`#F7F7F7`) and Eel ink (`#4B4B4B`). Nunito self-hosted at build time. CSS variables match DESIGN.md hex. Tailwind `@theme` maps to those variables.
 
 ## What is not in this phase
 
-Auth.js, Neon/Drizzle, task lists, capture/reorder/moves/complete, cron, deploy, RaftLabs. Tokens, Nunito, lip-button, nav, placeholders, and PWA land in later sub-steps of this phase.
+Auth.js, Neon/Drizzle, task lists, capture/reorder/moves/complete, cron, deploy, RaftLabs. Lip-button, nav, four routes, and PWA are still upcoming in this phase.
 
 ## How to verify
 
 ```bash
-npm install
 npm run dev
 ```
 
-Open http://localhost:3000.
+Confirm page background is Polar and computed `--color-feather` is `#58CC02`. Network: Nunito `.woff2` from origin, not fonts.googleapis.com.
 
 ## Open questions
 
