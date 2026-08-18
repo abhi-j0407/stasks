@@ -396,6 +396,24 @@ body {
   padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + var(--space-16));
 }
 
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-16);
+}
+
+.app-header__dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-12) var(--space-16);
+  margin: 0;
+  color: var(--color-wolf);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-caption);
+}
+
 .placeholder-screen__line {
   margin-top: var(--space-8);
   max-width: 70ch;
