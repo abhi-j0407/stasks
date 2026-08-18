@@ -551,8 +551,8 @@ For each missed cut that opens new logical date `T` (closing `T-1`), per user:
 
 ## Status
 
-- [ ] Phase 1: Scaffold
-- [ ] Phase 2: Google allowlist auth
+- [x] Phase 1: Scaffold
+- [x] Phase 2: Google allowlist auth
 - [ ] Phase 3: Schema and logical clock
 - [ ] Phase 4: Lists
 - [ ] Phase 5: Capture
