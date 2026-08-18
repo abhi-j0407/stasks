@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160" fill="none" aria-hidden="true">
+  <!-- Pill contact shadow -->
+  <rect x="48" y="138" width="104" height="12" rx="6" fill="#FFF5D3"/>
+  <!-- Pile -->
+  <rect x="40" y="96" width="120" height="36" rx="14" fill="#1CB0F6"/>
+  <rect x="52" y="66" width="96" height="32" rx="14" fill="#A5ED6E"/>
+  <rect x="64" y="40" width="72" height="28" rx="12" fill="#FFC800"/>
+  <!-- Park marker -->
+  <circle cx="100" cy="36" r="16" fill="#58CC02"/>
+  <circle cx="100" cy="36" r="7" fill="#F7F7F7"/>
+</svg>

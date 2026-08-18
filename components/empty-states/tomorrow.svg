@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160" fill="none" aria-hidden="true">
+  <!-- Pill contact shadow -->
+  <rect x="50" y="138" width="100" height="12" rx="6" fill="#D7FFB8"/>
+  <!-- Moon -->
+  <circle cx="58" cy="48" r="24" fill="#FFC800"/>
+  <circle cx="70" cy="42" r="16" fill="#F7F7F7"/>
+  <!-- Forward triangle -->
+  <path d="M84 40c0-8 9-13 16-9l52 32c6 4 6 12 0 16l-52 32c-7 4-16-1-16-9V40Z" fill="#1CB0F6"/>
+  <!-- Night block -->
+  <rect x="108" y="108" width="48" height="22" rx="11" fill="#CE82FF"/>
+</svg>
