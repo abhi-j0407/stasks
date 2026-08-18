@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { LipButton } from "@/components/buttons/lip-button";
 import registryMark from "@/components/empty-states/registry.svg";
 import todayMark from "@/components/empty-states/today.svg";
@@ -20,7 +21,13 @@ export function EmptyState({ mark, headline, line, cta }: EmptyStateProps) {
   return (
     <div className="empty-state">
       <div className="empty-state__art">
-        <img src={marks[mark]} alt="" width={200} height={160} />
+        <Image
+          src={marks[mark]}
+          alt=""
+          width={200}
+          height={160}
+          unoptimized
+        />
       </div>
       <h2 className="empty-state__headline">{headline}</h2>
       <p className="empty-state__line">{line}</p>
