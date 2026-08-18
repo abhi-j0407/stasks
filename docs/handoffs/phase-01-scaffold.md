@@ -10,7 +10,7 @@
 - `c586468` — Add a Next.js App Router app so later phases have a running shell.
 - `65019f5` — Load Nunito and DESIGN.md tokens so the Polar shell matches the frozen visual system.
 - `87029e7` — Add lip buttons, nav, and placeholder routes so the four screens are reachable with the tactile chrome.
-- PWA (this commit) — Make the app installable online-only so Chromium and iOS can add it without an offline cache.
+- `9b55576` — Make the app installable online-only so Chromium and iOS can add it without an offline cache.
 
 ## Files touched
 
