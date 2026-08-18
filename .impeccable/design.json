@@ -1,0 +1,270 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-18T13:55:00.000Z",
+  "title": "Design System: stasks",
+  "extensions": {
+    "colorMeta": {
+      "feather": {
+        "role": "primary",
+        "displayName": "Feather Green",
+        "canonical": "#58CC02",
+        "tonalRamp": ["#2F6B00", "#3D8A00", "#4CA800", "#58A700", "#58CC02", "#89E219", "#A5ED6E", "#D7FFB8"]
+      },
+      "mask": {
+        "role": "primary",
+        "displayName": "Mask Green",
+        "canonical": "#89E219",
+        "tonalRamp": ["#3D8A00", "#4CA800", "#58CC02", "#89E219", "#A5ED6E", "#D7FFB8", "#E8FFD1", "#F4FFEA"]
+      },
+      "tree-frog": {
+        "role": "primary",
+        "displayName": "Tree Frog",
+        "canonical": "#58A700",
+        "tonalRamp": ["#2F6B00", "#3D8A00", "#4CA800", "#58A700", "#58CC02", "#89E219", "#A5ED6E", "#D7FFB8"]
+      },
+      "macaw": {
+        "role": "secondary",
+        "displayName": "Macaw",
+        "canonical": "#1CB0F6",
+        "tonalRamp": ["#1453A3", "#1899D6", "#1CB0F6", "#84D8FF", "#BBF2FF", "#DDF4FF", "#EAF9FF", "#F4FCFF"]
+      },
+      "whale": {
+        "role": "secondary",
+        "displayName": "Whale",
+        "canonical": "#1899D6",
+        "tonalRamp": ["#1453A3", "#2B70C9", "#1899D6", "#1CB0F6", "#84D8FF", "#BBF2FF", "#DDF4FF", "#EAF9FF"]
+      },
+      "cardinal": {
+        "role": "tertiary",
+        "displayName": "Cardinal",
+        "canonical": "#FF4B4B",
+        "tonalRamp": ["#A61B1B", "#EA2B2B", "#FF4B4B", "#FF7878", "#FFB2B2", "#FFDFE0", "#FFF0F0", "#FFF7F7"]
+      },
+      "fire-ant": {
+        "role": "tertiary",
+        "displayName": "Fire Ant",
+        "canonical": "#EA2B2B",
+        "tonalRamp": ["#8A1515", "#A61B1B", "#EA2B2B", "#FF4B4B", "#FF7878", "#FFB2B2", "#FFDFE0", "#FFF0F0"]
+      },
+      "bee": {
+        "role": "tertiary",
+        "displayName": "Bee",
+        "canonical": "#FFC800",
+        "tonalRamp": ["#A56600", "#CD7900", "#FFC800", "#FFDE00", "#FBE56D", "#FFF5D3", "#FFF8E1", "#FFFCED"]
+      },
+      "fox": {
+        "role": "tertiary",
+        "displayName": "Fox",
+        "canonical": "#FF9600",
+        "tonalRamp": ["#A56644", "#CD7900", "#FF9600", "#FFB100", "#FFCE8E", "#FFF5D3", "#FFF8E8", "#FFFCF5"]
+      },
+      "beetle": {
+        "role": "tertiary",
+        "displayName": "Beetle",
+        "canonical": "#CE82FF",
+        "tonalRamp": ["#6F4EA1", "#9069CD", "#CE82FF", "#E0B3FF", "#FFCAFF", "#F5E8FF", "#FAF4FF", "#FDFBFF"]
+      },
+      "eel": {
+        "role": "neutral",
+        "displayName": "Eel",
+        "canonical": "#4B4B4B",
+        "tonalRamp": ["#2A2A2A", "#4B4B4B", "#777777", "#AFAFAF", "#E5E5E5", "#F7F7F7", "#FBFBFB", "#FFFFFF"]
+      },
+      "wolf": {
+        "role": "neutral",
+        "displayName": "Wolf",
+        "canonical": "#777777",
+        "tonalRamp": ["#4B4B4B", "#777777", "#AFAFAF", "#C8C8C8", "#E5E5E5", "#F0F0F0", "#F7F7F7", "#FFFFFF"]
+      },
+      "hare": {
+        "role": "neutral",
+        "displayName": "Hare",
+        "canonical": "#AFAFAF",
+        "tonalRamp": ["#777777", "#AFAFAF", "#C8C8C8", "#E5E5E5", "#EFEFEF", "#F7F7F7", "#FBFBFB", "#FFFFFF"]
+      },
+      "swan": {
+        "role": "neutral",
+        "displayName": "Swan",
+        "canonical": "#E5E5E5",
+        "tonalRamp": ["#AFAFAF", "#C8C8C8", "#E5E5E5", "#EFEFEF", "#F7F7F7", "#FAFAFA", "#FDFDFD", "#FFFFFF"]
+      },
+      "polar": {
+        "role": "neutral",
+        "displayName": "Polar",
+        "canonical": "#F7F7F7",
+        "tonalRamp": ["#E5E5E5", "#EFEFEF", "#F3F3F3", "#F7F7F7", "#FAFAFA", "#FCFCFC", "#FEFEFE", "#FFFFFF"]
+      },
+      "snow": {
+        "role": "neutral",
+        "displayName": "Snow",
+        "canonical": "#FFFFFF",
+        "tonalRamp": ["#E5E5E5", "#F0F0F0", "#F7F7F7", "#FAFAFA", "#FCFCFC", "#FDFDFD", "#FEFEFE", "#FFFFFF"]
+      },
+      "sea-sponge": {
+        "role": "neutral",
+        "displayName": "Sea Sponge",
+        "canonical": "#D7FFB8",
+        "tonalRamp": ["#58A700", "#89E219", "#A5ED6E", "#D7FFB8", "#E8FFD1", "#F0FFE3", "#F7FFF0", "#FCFFFA"]
+      },
+      "turtle": {
+        "role": "neutral",
+        "displayName": "Turtle",
+        "canonical": "#A5ED6E",
+        "tonalRamp": ["#58A700", "#58CC02", "#89E219", "#A5ED6E", "#D7FFB8", "#E8FFD1", "#F4FFEA", "#FAFFF6"]
+      },
+      "walking-fish": {
+        "role": "neutral",
+        "displayName": "Walking Fish",
+        "canonical": "#FFDFE0",
+        "tonalRamp": ["#EA2B2B", "#FF4B4B", "#FFB2B2", "#FFDFE0", "#FFF0F0", "#FFF5F5", "#FFFAFA", "#FFFCFC"]
+      },
+      "iguana": {
+        "role": "neutral",
+        "displayName": "Iguana",
+        "canonical": "#DDF4FF",
+        "tonalRamp": ["#1899D6", "#1CB0F6", "#84D8FF", "#DDF4FF", "#EAF9FF", "#F2FBFF", "#F8FDFF", "#FCFEFF"]
+      },
+      "canary": {
+        "role": "neutral",
+        "displayName": "Canary",
+        "canonical": "#FFF5D3",
+        "tonalRamp": ["#FF9600", "#FFC800", "#FBE56D", "#FFF5D3", "#FFF8E1", "#FFFBEB", "#FFFDF5", "#FFFEFA"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Streak numbers, empty-state headlines, stats heroes. Nunito 800." },
+      "headline": { "displayName": "Headline", "purpose": "Screen titles: Today, Tomorrow, Registry, Stats." },
+      "title": { "displayName": "Title", "purpose": "Personal and Work section headers." },
+      "body": { "displayName": "Body", "purpose": "Task titles at 17px on phone; notes and stats at 15px." },
+      "label": { "displayName": "Label", "purpose": "Uppercase buttons and chips. Nunito 800, 0.05em tracking." }
+    },
+    "shadows": [
+      { "name": "outline", "value": "0 0 0 2px #E5E5E5", "purpose": "Task rows, cards, heatmap cells at rest. Prefer border: 2px solid #E5E5E5." },
+      { "name": "lip-4-feather", "value": "0 4px 0 #58A700", "purpose": "Primary / complete button lip." },
+      { "name": "lip-4-macaw", "value": "0 4px 0 #1899D6", "purpose": "Secondary button lip." },
+      { "name": "lip-4-cardinal", "value": "0 4px 0 #EA2B2B", "purpose": "Destructive button lip." },
+      { "name": "lip-2-swan", "value": "0 2px 0 #E5E5E5", "purpose": "Ghost buttons, task rows, add rows." },
+      { "name": "modal", "value": "0 8px 0 rgba(75, 75, 75, 0.08)", "purpose": "Dialogs only. Never on list chrome." }
+    ],
+    "motion": [
+      { "name": "motion-none", "value": "0ms", "purpose": "Add-row Enter, keyboard complete, keyboard nav." },
+      { "name": "motion-press", "value": "150ms cubic-bezier(0.23, 1, 0.32, 1)", "purpose": "Lip key-travel on pressable controls." },
+      { "name": "ease-out-strong", "value": "cubic-bezier(0.23, 1, 0.32, 1)", "purpose": "Default UI ease-out (Emil). Enter and press." },
+      { "name": "motion-state", "value": "200ms cubic-bezier(0.23, 1, 0.32, 1)", "purpose": "Row complete, tabs, toasts." },
+      { "name": "ease-in-out-move", "value": "cubic-bezier(0.77, 0, 0.175, 1)", "purpose": "Drag live movement." },
+      { "name": "ease-bounce-celebrate", "value": "cubic-bezier(0.34, 1.56, 0.64, 1)", "purpose": "Streak tick and first-complete-of-day only." },
+      { "name": "motion-celebrate", "value": "400ms cubic-bezier(0.34, 1.56, 0.64, 1)", "purpose": "Streak increment, completion pop." }
+    ],
+    "breakpoints": [
+      { "name": "phone", "value": "0px" },
+      { "name": "tablet", "value": "768px" },
+      { "name": "desktop", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Go action: complete, sign in, empty CTA. 3D lip, uppercase Nunito 800.",
+      "html": "<button class=\"ds-btn-primary\" type=\"button\">DONE</button>",
+      "css": ".ds-btn-primary { background: #58CC02; color: #FFFFFF; padding: 14px 20px; min-height: 50px; border: none; border-radius: 12px; box-shadow: 0 4px 0 #58A700; font-family: Nunito, ui-rounded, system-ui, sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; transition: transform 150ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 150ms cubic-bezier(0.23, 1, 0.32, 1); } .ds-btn-primary:hover { filter: brightness(0.98); } .ds-btn-primary:active { transform: translateY(4px); box-shadow: 0 0 0 #58A700; } .ds-btn-primary:focus-visible { outline: 3px solid #1CB0F6; outline-offset: 2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Move actions. Snow fill, Swan outline and 2px lip.",
+      "html": "<button class=\"ds-btn-ghost\" type=\"button\">MOVE TO REGISTRY</button>",
+      "css": ".ds-btn-ghost { background: #FFFFFF; color: #1CB0F6; padding: 14px 20px; min-height: 50px; border: 2px solid #E5E5E5; border-radius: 12px; box-shadow: 0 2px 0 #E5E5E5; font-family: Nunito, ui-rounded, system-ui, sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; transition: transform 150ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 150ms cubic-bezier(0.23, 1, 0.32, 1); } .ds-btn-ghost:active { transform: translateY(2px); box-shadow: 0 0 0 #E5E5E5; } .ds-btn-ghost:focus-visible { outline: 3px solid #1CB0F6; outline-offset: 2px; }"
+    },
+    {
+      "name": "Task Row",
+      "kind": "custom",
+      "refersTo": "task-row",
+      "description": "Default incomplete task. Answer-tile grammar.",
+      "html": "<div class=\"ds-task\"><span class=\"ds-task-check\"></span><span class=\"ds-task-title\">Buy oat milk</span><span class=\"ds-chip-upcoming\">UPCOMING</span></div>",
+      "css": ".ds-task { display: flex; align-items: center; gap: 12px; background: #FFFFFF; color: #4B4B4B; border: 2px solid #E5E5E5; border-radius: 12px; box-shadow: 0 2px 0 #E5E5E5; padding: 12px 16px; font-family: Nunito, ui-rounded, system-ui, sans-serif; } .ds-task-check { width: 24px; height: 24px; border: 2px solid #E5E5E5; border-radius: 9999px; box-shadow: 0 2px 0 #E5E5E5; flex: none; } .ds-task-title { flex: 1; font-size: 17px; font-weight: 400; } .ds-chip-upcoming { background: #DDF4FF; color: #1899D6; border-radius: 9999px; padding: 2px 8px; font-size: 12px; font-weight: 800; letter-spacing: 0.05em; }"
+    },
+    {
+      "name": "Overdue Task Row",
+      "kind": "custom",
+      "refersTo": "task-row-overdue",
+      "description": "Missed committed work. Walking Fish wash, Cardinal chip.",
+      "html": "<div class=\"ds-task-overdue\"><span class=\"ds-task-check\"></span><span class=\"ds-task-title\">Send invoice</span><span class=\"ds-chip-overdue\">OVERDUE</span></div>",
+      "css": ".ds-task-overdue { display: flex; align-items: center; gap: 12px; background: #FFDFE0; color: #4B4B4B; border: 2px solid #FFB2B2; border-radius: 12px; box-shadow: 0 2px 0 #FFB2B2; padding: 12px 16px; font-family: Nunito, ui-rounded, system-ui, sans-serif; } .ds-task-overdue .ds-task-check { width: 24px; height: 24px; border: 2px solid #FFB2B2; border-radius: 9999px; flex: none; } .ds-task-overdue .ds-task-title { flex: 1; font-size: 17px; } .ds-chip-overdue { background: #FF4B4B; color: #FFFFFF; border-radius: 9999px; padding: 2px 8px; font-size: 12px; font-weight: 800; letter-spacing: 0.05em; }"
+    },
+    {
+      "name": "Add Row",
+      "kind": "input",
+      "refersTo": "input-add",
+      "description": "Always-on capture. Instant on Enter. Macaw focus.",
+      "html": "<input class=\"ds-add\" placeholder=\"Add a personal task\" />",
+      "css": ".ds-add { width: 100%; box-sizing: border-box; background: #FFFFFF; color: #4B4B4B; border: 2px dashed #E5E5E5; border-radius: 12px; padding: 12px 16px; font-family: Nunito, ui-rounded, system-ui, sans-serif; font-size: 17px; font-weight: 400; } .ds-add::placeholder { color: #AFAFAF; } .ds-add:focus { outline: none; border-style: solid; border-color: #1CB0F6; background: #DDF4FF; }"
+    },
+    {
+      "name": "Streak Pill",
+      "kind": "chip",
+      "refersTo": "chip-upcoming",
+      "description": "Header streak. Fox number, Canary wash. Geometric flame, not an owl.",
+      "html": "<div class=\"ds-streak\"><span class=\"ds-streak-mark\"></span><span class=\"ds-streak-n\">12</span></div>",
+      "css": ".ds-streak { display: inline-flex; align-items: center; gap: 6px; background: #FFF5D3; border: 2px solid #FFC800; border-radius: 9999px; padding: 4px 10px; font-family: Nunito, ui-rounded, system-ui, sans-serif; } .ds-streak-mark { width: 12px; height: 16px; background: #FF9600; border-radius: 8px 8px 4px 4px; } .ds-streak-n { color: #4B4B4B; font-size: 15px; font-weight: 800; }"
+    },
+    {
+      "name": "Bottom Nav",
+      "kind": "nav",
+      "refersTo": "nav-bar",
+      "description": "Today, Tomorrow, Registry, Stats. Bottom bar on phone; 72px left rail at 1024px+. Active Feather, inactive Hare.",
+      "html": "<nav class=\"ds-nav\"><span class=\"ds-nav-item ds-nav-item-active\">TODAY</span><span class=\"ds-nav-item\">TOMORROW</span><span class=\"ds-nav-item\">REGISTRY</span><span class=\"ds-nav-item\">STATS</span></nav>",
+      "css": ".ds-nav { display: flex; justify-content: space-around; align-items: center; background: #FFFFFF; border-top: 2px solid #E5E5E5; height: 64px; padding: 8px 12px; font-family: Nunito, ui-rounded, system-ui, sans-serif; } .ds-nav-item { color: #AFAFAF; font-size: 11px; font-weight: 800; letter-spacing: 0.06em; } .ds-nav-item-active { color: #58CC02; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Tactile Ritual",
+    "overview": "stasks should feel like a grown-up arcade for getting through the day. You open it in bed to plan tomorrow, tap chunky keys, watch a streak tick, and close it. It is a product UI wearing Duolingo’s public visual language: vivid animal-named color, rounded type, hard 3D lips instead of blurry shadows, white-dominant surfaces, one obvious action. Inspired by Duolingo, not a clone. No Duo, no wordmark, no Feather Bold, no DIN Next Rounded.",
+    "keyCharacteristics": [
+      "Feather Green for go / complete / streak heat; never as body text",
+      "3D key buttons: solid 0 4px 0 lip; press = translateY(4px) + lip to 0",
+      "2px Swan outlines on rows and cards; no soft drop shadows on lists",
+      "Nunito 400 / 800 self-hosted via next/font",
+      "Personal = green family, Work = Macaw family",
+      "Overdue = Cardinal chip; Upcoming = Macaw chip",
+      "Heatmap uses the green ramp with GitHub grammar"
+    ],
+    "rules": [
+      { "name": "The Green-Means-Go Rule", "body": "If a control is not the primary action, not a completion, and not streak heat, it is not Feather Green.", "section": "colors" },
+      { "name": "The Ink Rule", "body": "Body, titles, and notes are Eel or Wolf on Snow/Polar. Feather Green is a fill, never a paragraph color.", "section": "colors" },
+      { "name": "The Lip Rule", "body": "A filled control’s shadow is a solid offset of its darker sibling, 4px, zero blur. Ghost controls use Swan 0 2px 0.", "section": "colors" },
+      { "name": "The Two-Weight Rule", "body": "No 300, no 500. Emphasis is 800. Reading is 400.", "section": "typography" },
+      { "name": "The Numbers Rule", "body": "Streak, best streak, heatmap totals, completion counts: Display 800, never caption.", "section": "typography" },
+      { "name": "The Hard-Lip Rule", "body": "If it is pressable, it has a lip in a darker shade of itself. If it is a container, it has a 2px Swan outline. Not both mixed with blur.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use Nunito 400/800 self-hosted with next/font. Cite OFL in the repo.",
+      "Do give every pressable filled control a 4px solid lip in Tree Frog / Whale / Fire Ant and 150ms key travel.",
+      "Do outline rows with 2px Swan, not blur.",
+      "Do set ink to Eel, secondary to Wolf, canvas to Polar, cards to Snow.",
+      "Do use Feather Green only for go: complete, primary CTA, active tab, heatmap heat, Personal accent.",
+      "Do mark Work with Macaw and overdue with a labeled Cardinal chip (not color alone).",
+      "Do shout on buttons (uppercase 800) and speak in sentence case on headlines.",
+      "Do keep add-row and keyboard paths instant.",
+      "Do celebrate the first complete of the day and streak milestones 7/30/100. Tick the number on other days.",
+      "Do honor prefers-reduced-motion.",
+      "Do keep one primary green action per screen."
+    ],
+    "donts": [
+      "Don't use Duo, the Duolingo wordmark, Feather Bold, or DIN Next Rounded.",
+      "Don't load Google Fonts from the CDN at runtime.",
+      "Don't use Linear / Notion / Todoist gray SaaS chrome, tiny Inter, or hairline cards.",
+      "Don't look like Apple Reminders or stock iOS lists.",
+      "Don't use glassmorphism, gradient text, hero-metric templates, identical icon-card grids, or sidebar color stripes.",
+      "Don't ship dark-mode purple / neon productivity gamification.",
+      "Don't shame. No Failed, no sad mascot, no guilt copy.",
+      "Don't put body text on Feather Green. Don't use #000000.",
+      "Don't use blurred drop shadows where a lip or 2px outline belongs.",
+      "Don't mix radii at random. 8 chips, 12 controls, 16 panels, pill for bars/badges.",
+      "Don't animate Enter-to-add or other 100+/day actions.",
+      "Don't fire the milestone celebration every complete."
+    ]
+  }
+}
