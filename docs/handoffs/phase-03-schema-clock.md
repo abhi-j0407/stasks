@@ -2,7 +2,7 @@
 
 **Objective:** Neon + Drizzle schema live; `logicalDate` matches PRD §12; header shows T and T+1; catch-up/job_runs scaffolding exists (jobs still no-ops).
 
-**Branch:** `feat/03-schema-clock` from `development` (`5678080`). Not merged. `main` remains `5a83247`, frozen specs only. Not pushed.
+**Branch:** `feat/03-schema-clock` (merged into `development` at `48c510c`; `main` remains `5a83247`, frozen specs only). Not pushed.
 
 ## Commits
 
@@ -11,6 +11,7 @@
 - `39d1c73` — Show logical Today and Tomorrow in the signed-in header.
 - `88ec4f8` — Record the Phase 3 schema and clock handoff so a cold session can verify the slice.
 - `6ca04f9` — Record the Phase 3 handoff commit hash so a cold session can verify the work.
+- `48c510c` — Note that the Phase 3 Neon migration ran so a cold session knows the schema is live.
 
 ## Files touched
 
@@ -64,5 +65,5 @@ npm test
 
 ## Open questions
 
-- Merge `feat/03-schema-clock` into `development` only when the owner agrees.
 - After first sign-in, confirm a `users` row exists for the allowlisted email.
+- P2-1 remains open (not a Phase 3 blocker).
