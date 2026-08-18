@@ -9,6 +9,7 @@
 - `9297f8b` — Add Neon Drizzle schema so Auth.js and later lists have a database.
 - `68a5120` — Add the Kolkata logical clock so 04:00 cuts Today from last night.
 - `39d1c73` — Show logical Today and Tomorrow in the signed-in header.
+- `88ec4f8` — Record the Phase 3 schema and clock handoff so a cold session can verify the slice.
 
 ## Files touched
 
