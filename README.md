@@ -11,7 +11,12 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000). Signed-in visitors go to `/today`; everyone else sees sign-in.
 
-Copy `.env.example` to `.env.local` and fill `AUTH_*` for Google allowlist. Do not commit secrets.
+Copy `.env.example` to `.env.local` and fill `AUTH_*` for Google allowlist plus `DATABASE_URL` (personal Neon, direct/unpooled if Neon shows both). Do not commit secrets.
+
+```bash
+npm run db:migrate
+npm test
+```
 
 ## Accounts
 
