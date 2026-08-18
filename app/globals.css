@@ -409,6 +409,45 @@ body {
   margin-top: var(--space-24);
 }
 
+.auth-screen {
+  padding-bottom: var(--space-16);
+}
+
+.auth-screen__line {
+  margin-top: var(--space-8);
+  max-width: 65ch;
+  color: var(--color-wolf);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-body);
+}
+
+.auth-screen__cta {
+  margin-top: var(--space-24);
+}
+
+.auth-screen__link {
+  display: inline-block;
+  margin-top: var(--space-24);
+  color: var(--color-wolf);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-body);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.auth-screen__link:focus-visible {
+  outline: 3px solid var(--color-macaw);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .auth-screen__link:hover {
+    color: var(--color-eel);
+  }
+}
+
 .app-nav {
   position: fixed;
   right: 0;
