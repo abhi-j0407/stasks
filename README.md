@@ -9,9 +9,9 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The app redirects to `/today`.
+Open [http://localhost:3000](http://localhost:3000). Signed-in visitors go to `/today`; everyone else sees sign-in.
 
-Copy `.env.example` to `.env.local` when a later phase needs env values. Do not commit secrets.
+Copy `.env.example` to `.env.local` and fill `AUTH_*` for Google allowlist. Do not commit secrets.
 
 ## Accounts
 
