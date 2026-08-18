@@ -2,7 +2,7 @@
 
 **Objective:** Only the allowlisted Gmail gets a session; everyone else sees the DESIGN.md denied screen. Unauthenticated visitors never see lists.
 
-**Branch:** `feat/02-auth` (from `development` at `e59c3af`). Not merged. Not pushed. `main` remains `5a83247` (frozen specs only).
+**Branch:** `feat/02-auth` (from `development` at `e59c3af`). Merge into `development` is for the owner/orchestrator close-out. Not pushed. `main` remains `5a83247` (frozen specs only).
 
 ## Commits
 
@@ -10,6 +10,7 @@
 - `f35cc41` — Add Polar sign-in and denied screens so visitors meet kind DESIGN.md copy.
 - `1f9d523` — Gate app routes behind a session so logged-out visitors never see lists.
 - `d6cea9f` — Record the Phase 2 auth handoff so a cold session can verify the gate.
+- `123920c` — Record the Phase 2 handoff commit hash so a cold session can verify the work.
 
 ## Files touched
 
@@ -24,14 +25,17 @@
 - `app/(app)/layout.tsx` — authoritative `auth()` check
 - `app/page.tsx` — `/` → `/today` or `/signin`
 - `README.md` — localhost entry matches the gate
+- `docs/handoffs/phase-02-auth.md` — this file
+- `docs/PENDING.md` — standing list for owner browser tests and later pickup
 
 ## What works
 
 - Auth.js v5 Google + JWT. No Clerk, no Drizzle adapter, no Neon.
 - `signIn` callback: email must equal `AUTH_ALLOWLIST_EMAIL` (trim, case-insensitive). Google `email_verified` must be true. Missing env or email fails closed to `/denied`.
 - Logged out: `/`, `/today`, `/tomorrow`, `/registry`, `/stats` redirect to `/signin`. `/signin` and `/denied` return 200. No list nav on those pages.
+- Google sign-in starts: 302 to `accounts.google.com` with `redirect_uri=http://localhost:3000/api/auth/callback/google` and `prompt=select_account`. Google accepted the client (no `invalid_client` or `redirect_uri_mismatch`).
 - `npm run lint` and `npm run build` pass. Proxy is registered.
-- `.env.local` exists locally (gitignored): `AUTH_SECRET` generated, `AUTH_URL=http://localhost:3000`, `AUTH_TRUST_HOST=true`. Google ID/secret and allowlist email are empty.
+- `.env.local` exists locally (gitignored): `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`, `AUTH_ALLOWLIST_EMAIL`, `AUTH_URL`, `AUTH_TRUST_HOST` are set. Never commit this file.
 
 ## What is not in this phase
 
@@ -39,18 +43,9 @@ Neon, Drizzle adapter, task lists from DB, capture/reorder/moves/complete, cron,
 
 ## Localhost Google OAuth (owner, personal GCP only)
 
-Create a **personal** Google Cloud OAuth client (Web application). Never RaftLabs.
-
 - Authorized JavaScript origin: `http://localhost:3000`
 - **Authorized redirect URI:** `http://localhost:3000/api/auth/callback/google`
-
-OAuth consent screen in Testing: add the allowlisted Gmail **and** a second Google as test users. If the second account is not a test user, Google blocks before `/denied`.
-
-Fill in `.env.local` (do not commit):
-
-- `AUTH_GOOGLE_ID`
-- `AUTH_GOOGLE_SECRET`
-- `AUTH_ALLOWLIST_EMAIL`
+- Consent screen in Testing: allowlisted Gmail **and** a second Google as test users.
 
 ## How to verify
 
@@ -65,9 +60,8 @@ npm run dev
 4. `npm run lint` and `npm run build`.
 5. `git status` does not include `.env.local`.
 
-Steps 2–3 are **blocked** until the owner fills the three env values above.
+Steps 2–3 are **not done in a browser**. Owner deferred them. Tracked as **P2-1** in [docs/PENDING.md](../PENDING.md).
 
 ## Open questions
 
-- Owner: personal `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`, `AUTH_ALLOWLIST_EMAIL` (never commit; never RaftLabs).
-- Merge `feat/02-auth` into `development` after those values work locally? Owner decides. No force. Leave `main` alone.
+- None for Phase 2 code. Browser allowlist/denied check is P2-1, not a blocker for Phase 3.
