@@ -10,6 +10,7 @@
 - `68a5120` — Add the Kolkata logical clock so 04:00 cuts Today from last night.
 - `39d1c73` — Show logical Today and Tomorrow in the signed-in header.
 - `88ec4f8` — Record the Phase 3 schema and clock handoff so a cold session can verify the slice.
+- `6ca04f9` — Record the Phase 3 handoff commit hash so a cold session can verify the work.
 
 ## Files touched
 
@@ -19,7 +20,7 @@
 - `lib/db/index.ts` — Neon HTTP Drizzle client
 - `lib/auth.ts` — Drizzle adapter + JWT session; jwt/session callbacks expose `user.id`
 - `types/next-auth.d.ts` — session `user.id`
-- `drizzle/0000_schema-clock.sql`, `drizzle/meta/*` — generated migration (not applied)
+- `drizzle/0000_schema-clock.sql`, `drizzle/meta/*` — generated migration; applied to personal Neon
 - `lib/logical-clock.ts`, `lib/logical-clock.test.ts` — PRD §12 clock + caption formatter
 - `vitest.config.mts` — node env, `lib/**/*.test.ts`
 - `lib/jobs/catch-up.ts`, `lib/jobs/rollover.ts`, `lib/jobs/promote.ts` — catch-up returns `logicalDate` only; job stubs no-op
@@ -37,11 +38,11 @@
 - Signed-in app shell shows Wolf caption `Today · …` and `Tomorrow · …` from `logicalDate(now)` / `logicalTomorrow(now)` in Asia/Kolkata. No streak pill (Phase 11).
 - Catch-up is scaffolding: it exposes `logicalDate` and does not read or write `job_runs`, does not loop missing dates, and does not mutate lists. `runRollover` / `runPromote` return immediately.
 - `npm run lint` and `npm run build` pass.
+- `npm run db:migrate` succeeded against the owner’s personal Neon (`0000_schema-clock`).
 - `.env.local` is gitignored and was not committed.
 
 ## What is not in this phase
 
-- **`drizzle-kit migrate` has not been run.** Owner chose stop-before-migrate; `DATABASE_URL` is missing/empty in `.env.local`. SQL is generated and committed.
 - Task lists from DB (Phase 4), capture/reorder/moves/complete, real rollover/promote, cron, deploy, seed data, streak pill.
 - P2-1 (local browser allowlist/denied) is still open. Not closed.
 - No Clerk, Auth0, or RaftLabs.
@@ -54,8 +55,8 @@ npm test
 ```
 
 1. Tests cover PRD §12: `2026-08-18T03:59:00+05:30` → `2026-08-17`; `2026-08-18T04:00:00+05:30` → `2026-08-18`. Do not wait overnight.
-2. Put a **personal** Neon `DATABASE_URL` in `.env.local` (direct/unpooled if Neon shows both). Never RaftLabs. Never commit the file.
-3. `npm run db:migrate` against that Neon project.
+2. `DATABASE_URL` is in `.env.local` (personal Neon, direct/unpooled). Never RaftLabs. Never commit the file.
+3. `npm run db:migrate` already succeeded against that Neon project.
 4. `npm run dev` → sign in with the allowlisted Google account (re-sign-in once so the adapter can write `users` / `accounts` and the JWT carries `user.id`).
 5. `/today` header shows logical Today and Tomorrow as Wolf captions on Polar.
 6. `npm run lint` and `npm run build`.
@@ -63,6 +64,5 @@ npm test
 
 ## Open questions
 
-- Personal Neon `DATABASE_URL` still missing. Migrate is blocked until the owner adds it and an implementor runs `npm run db:migrate`.
-- Merge `feat/03-schema-clock` into `development` only when the owner agrees (and preferably after migrate succeeds).
-- After migrate + first sign-in, confirm a `users` row exists for the allowlisted email.
+- Merge `feat/03-schema-clock` into `development` only when the owner agrees.
+- After first sign-in, confirm a `users` row exists for the allowlisted email.
