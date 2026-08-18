@@ -2,7 +2,7 @@
 
 **Objective:** Running Next.js App Router app on a `development` git line: DESIGN.md tokens as CSS variables, Nunito via `next/font`, PWA shell, lip-button + nav chrome, placeholder screens.
 
-**Branch:** `feat/01-scaffold` (from `development`)
+**Branch:** `feat/01-scaffold` (merged into `development` at `878f103`; `main` remains `5a83247`, frozen specs only). Not pushed.
 
 ## Commits
 
