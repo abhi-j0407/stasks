@@ -15,8 +15,11 @@ Copy `.env.example` to `.env.local` and fill `AUTH_*` for Google allowlist plus 
 
 ```bash
 npm run db:migrate
+npm run db:seed
 npm test
 ```
+
+`db:seed` is local visual QA only. It inserts sample Today / Tomorrow / Registry rows for the allowlisted user if that account has no tasks yet. Sign in once first. It never deletes. Do not run in production.
 
 ## Accounts
 
