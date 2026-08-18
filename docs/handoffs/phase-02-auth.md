@@ -2,7 +2,7 @@
 
 **Objective:** Only the allowlisted Gmail gets a session; everyone else sees the DESIGN.md denied screen. Unauthenticated visitors never see lists.
 
-**Branch:** `feat/02-auth` (from `development` at `e59c3af`). Merge into `development` is for the owner/orchestrator close-out. Not pushed. `main` remains `5a83247` (frozen specs only).
+**Branch:** `feat/02-auth` (merged into `development` at `44f1068`; `main` remains `5a83247`, frozen specs only). Not pushed.
 
 ## Commits
 
@@ -11,6 +11,7 @@
 - `1f9d523` — Gate app routes behind a session so logged-out visitors never see lists.
 - `d6cea9f` — Record the Phase 2 auth handoff so a cold session can verify the gate.
 - `123920c` — Record the Phase 2 handoff commit hash so a cold session can verify the work.
+- `44f1068` — Track deferred browser auth checks in pending tasks so Phase 2 can close without a local Google click.
 
 ## Files touched
 
@@ -39,7 +40,7 @@
 
 ## What is not in this phase
 
-Neon, Drizzle adapter, task lists from DB, capture/reorder/moves/complete, cron, deploy, RaftLabs, Clerk/Auth0. Phase 3 starts only after this branch merges to `development`.
+Neon, Drizzle adapter, task lists from DB, capture/reorder/moves/complete, cron, deploy, RaftLabs, Clerk/Auth0.
 
 ## Localhost Google OAuth (owner, personal GCP only)
 
