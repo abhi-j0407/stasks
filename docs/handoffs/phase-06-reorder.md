@@ -10,6 +10,7 @@
 - `7e4609a` — Wire the existing drag handle so Personal and Work can rearrange on the same list.
 - `e1b10e6` — Match DESIGN.md dragging so pointer reorder feels tactile and keyboard reorder stays still.
 - `0f28476` — Fix the reorder drop-target test type so production typecheck can pass.
+- `fb7f6ff` — Record the Phase 6 reorder handoff so a cold session can verify the slice.
 
 ## Files touched
 
