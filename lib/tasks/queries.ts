@@ -3,6 +3,7 @@ import { and, asc, eq, isNull } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { withNeonRetry } from "@/lib/db/retry";
 import { completionEvents, tasks } from "@/lib/db/schema";
 import {
   splitByCategory,
@@ -41,35 +42,39 @@ export async function listIncomplete(
   userId: string,
   location: TaskLocation,
 ): Promise<TaskRowData[]> {
-  return db
-    .select(taskRowColumns)
-    .from(tasks)
-    .where(
-      and(
-        eq(tasks.userId, userId),
-        eq(tasks.location, location),
-        isNull(tasks.completedAt),
-      ),
-    )
-    .orderBy(asc(tasks.sortOrder));
+  return withNeonRetry(() =>
+    db
+      .select(taskRowColumns)
+      .from(tasks)
+      .where(
+        and(
+          eq(tasks.userId, userId),
+          eq(tasks.location, location),
+          isNull(tasks.completedAt),
+        ),
+      )
+      .orderBy(asc(tasks.sortOrder)),
+  );
 }
 
 export async function listCompletedToday(
   userId: string,
   logicalDate: string,
 ): Promise<TaskRowData[]> {
-  const rows = await db
-    .select(taskRowColumns)
-    .from(completionEvents)
-    .innerJoin(tasks, eq(tasks.id, completionEvents.taskId))
-    .where(
-      and(
-        eq(completionEvents.userId, userId),
-        eq(tasks.userId, userId),
-        eq(completionEvents.logicalDate, logicalDate),
-      ),
-    )
-    .orderBy(asc(completionEvents.completedAt));
+  const rows = await withNeonRetry(() =>
+    db
+      .select(taskRowColumns)
+      .from(completionEvents)
+      .innerJoin(tasks, eq(tasks.id, completionEvents.taskId))
+      .where(
+        and(
+          eq(completionEvents.userId, userId),
+          eq(tasks.userId, userId),
+          eq(completionEvents.logicalDate, logicalDate),
+        ),
+      )
+      .orderBy(asc(completionEvents.completedAt)),
+  );
 
   const { personal, work } = splitByCategory(rows);
   return [...personal, ...work];

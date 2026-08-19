@@ -12,10 +12,11 @@
 - `3b74a5d` — Load Today, Tomorrow, and Registry from the database so seeded tasks land in the right subset.
 - `27db2e2` — Add a guarded dev seed so visual QA has Personal and Work rows without capture.
 - `6fd4a06` — Record the Phase 4 lists handoff so a cold session can verify the slice.
+- *(retry commit)* — Retry Neon HTTP on cold start so lists don't 500 after scale-to-zero.
 
 ## Files touched
 
-- `lib/tasks/queries.ts` — `requireUserId()`, `listIncomplete`, `listCompletedToday`; scoped to session uuid
+- `lib/db/retry.ts`, `lib/db/retry.test.ts` — retry `fetch failed` while Neon compute wakes
 - `lib/tasks/split-by-category.ts`, `lib/tasks/queries.test.ts` — Personal then Work split
 - `components/tasks/task-row.tsx` — Snow / 2px Swan / 12px / lip 2px / 17px Eel; complete + drag visual only
 - `components/tasks/add-row.tsx` — dashed Swan chrome, disabled input, no submit
@@ -39,8 +40,8 @@ Catch-up in `app/(app)/layout.tsx` is unchanged (still returns `logicalDate` onl
 - Empty sections still show dashed add-row chrome. Add, complete, and drag do not persist.
 - Header streak pill shows `0` (no streak logic).
 - Nav unchanged: mobile 64px + safe-area; ≥1024px 72px left rail; content max 600px.
-- `npm test` (8), `npm run lint`, `npm run build` pass. List routes are dynamic (`ƒ`).
-- `npm run db:seed` is guarded: refuses `VERCEL_ENV=production`, needs `DATABASE_URL` + `AUTH_ALLOWLIST_EMAIL`, skips if the user already has tasks, never deletes. First run on this machine waited because no `users` row yet (sign in once, then seed).
+- `npm test` (10), `npm run lint`, `npm run build` pass. List routes are dynamic (`ƒ`).
+- `npm run db:seed` is guarded: refuses `VERCEL_ENV=production`, needs `DATABASE_URL` + `AUTH_ALLOWLIST_EMAIL`, skips if the user already has tasks, never deletes. Seed succeeded after the allowlisted account signed in. List/seed queries retry a few times if Neon is waking from scale-to-zero (`fetch failed`).
 - `.env.local` was not committed.
 
 ## What is not in this phase
@@ -64,7 +65,7 @@ npm run dev
 ```
 
 1. Sign in with the allowlisted Google account. If lists 404-auth or look empty of *your* rows, sign out and in once so `users` / `accounts` exist and `session.user.id` is the DB uuid.
-2. `npm run db:seed` (after that sign-in). Then `/today` shows Personal “Water the plants” and Work “Reply to the one email that matters”, plus completed-today “Make the bed”. `/tomorrow` and `/registry` each have Personal then Work.
+2. `npm run db:seed` (after that sign-in). Then `/today` shows Personal “Water the plants” and Work “Reply to the one email that matters”, plus completed-today “Make the bed”. `/tomorrow` and `/registry` each have Personal then Work. If Neon has been idle ~5 minutes, the first query can take a couple of seconds while the compute wakes.
 3. Add-row is visible in every section, including empty ones. Typing / Enter does not save. Complete control and drag handle do not save.
 4. With no incomplete tasks on a location, that screen shows SVG + copy + CTA. Copy is never “No data.”
 5. Width ≥1024px: 72px left rail. Phone: 64px bottom nav + safe-area.

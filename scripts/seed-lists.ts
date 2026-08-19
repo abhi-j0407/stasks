@@ -22,14 +22,17 @@ async function main() {
   }
 
   const { db } = await import("../lib/db");
+  const { withNeonRetry } = await import("../lib/db/retry");
   const { completionEvents, tasks, users } = await import("../lib/db/schema");
   const { logicalDate } = await import("../lib/logical-clock");
 
-  const [user] = await db
-    .select({ id: users.id, email: users.email })
-    .from(users)
-    .where(eq(users.email, email))
-    .limit(1);
+  const [user] = await withNeonRetry(() =>
+    db
+      .select({ id: users.id, email: users.email })
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1),
+  );
 
   if (!user) {
     throw new Error(
@@ -129,5 +132,10 @@ async function main() {
 
 main().catch((error: unknown) => {
   console.error(error instanceof Error ? error.message : error);
+  const cause =
+    error && typeof error === "object" && "cause" in error ? error.cause : undefined;
+  if (cause instanceof Error) {
+    console.error(cause.message);
+  }
   process.exit(1);
 });
