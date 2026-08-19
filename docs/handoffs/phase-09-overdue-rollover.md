@@ -10,6 +10,7 @@
 - `bf7d0f9` — Add the 04:00 rollover planner so a miss gets one grace day, then exile, without waiting overnight.
 - `bf0d747` — Gate the 04:00 cron behind CRON_SECRET so anonymous callers cannot roll the board.
 - `bcca4a4` — Apply missed 04:00 cuts in order on load so a failed cron cannot freeze yesterday's board.
+- `49843c5` — Record the Phase 9 overdue handoff so a cold session can verify the slice.
 
 ## Files touched
 
