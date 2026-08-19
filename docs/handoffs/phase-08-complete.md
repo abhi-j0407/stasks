@@ -2,7 +2,7 @@
 
 **Objective:** Complete from Today / Tomorrow / Registry; appear in completed-today grouped Personal/Work; undo until 04:00 restoring overdue; delete with a kind Snow confirm and a 5s restore. Occupancy unchanged. No streak tick.
 
-**Branch:** `feat/08-complete` (from `development` at `011241f`; `main` remains `5a83247`, frozen specs only). Not merged. Not pushed.
+**Branch:** `feat/08-complete` (fast-forwarded into `development` at `000824a`; `main` remains `5a83247`, frozen specs only). Not pushed.
 
 ## Commits
 
@@ -12,6 +12,7 @@
 - `89f7b87` — Add kind delete confirm and a 5s restore so mistakes never write Failed or streak events.
 - `efc8059` — Record the Phase 8 complete handoff so a cold session can verify the slice.
 - `003bcd9` — Record the Phase 8 handoff commit hash so a cold session can verify the work.
+- `000824a` — Note the Phase 8 hash-record commit so the handoff lists every commit on the branch.
 
 ## Files touched
 
@@ -81,6 +82,7 @@ npm run dev
 ## Open questions
 
 - P2-1 remains open (not a Phase 8 blocker).
-- Merge `feat/08-complete` into `development` when the owner agrees. No force. Leave `main` alone. Do not push.
 - Catch-up still does not run rollover/promote.
 - Occupancy is still write-only; no UI to inspect it.
+- Do not push. Leave `main` alone. Phase 13 only.
+- `feat/08-complete` is fast-forwarded into `development` at `000824a`.
