@@ -1,6 +1,6 @@
 import { AddRow } from "@/components/tasks/add-row";
 import { TaskRow } from "@/components/tasks/task-row";
-import type { TaskRowData } from "@/lib/tasks/queries";
+import type { TaskLocation, TaskRowData } from "@/lib/tasks/queries";
 import {
   splitByCategory,
   type TaskCategory,
@@ -8,15 +8,20 @@ import {
 
 type TaskListProps = {
   tasks: TaskRowData[];
+  location: TaskLocation;
 };
 
-export function TaskList({ tasks }: TaskListProps) {
+export function TaskList({ tasks, location }: TaskListProps) {
   const { personal, work } = splitByCategory(tasks);
 
   return (
     <div className="task-list">
-      <TaskSection category="personal" tasks={personal} />
-      <TaskSection category="work" tasks={work} />
+      <TaskSection
+        category="personal"
+        tasks={personal}
+        location={location}
+      />
+      <TaskSection category="work" tasks={work} location={location} />
     </div>
   );
 }
@@ -65,6 +70,7 @@ export function CompletedTodayWell({ tasks }: CompletedTodayWellProps) {
 type TaskSectionProps = {
   category: TaskCategory;
   tasks: TaskRowData[];
+  location?: TaskLocation;
   completed?: boolean;
   headingPrefix?: string;
   HeadingTag?: "h2" | "h3";
@@ -73,6 +79,7 @@ type TaskSectionProps = {
 function TaskSection({
   category,
   tasks,
+  location,
   completed = false,
   headingPrefix = "list",
   HeadingTag = "h2",
@@ -93,10 +100,14 @@ function TaskSection({
         {title}
       </HeadingTag>
       <div className="task-section__rows">
-        {tasks.map((task) => (
-          <TaskRow key={task.id} task={task} completed={completed} />
-        ))}
-        {completed ? null : <AddRow category={category} />}
+        <div className="task-section__items">
+          {tasks.map((task) => (
+            <TaskRow key={task.id} task={task} completed={completed} />
+          ))}
+        </div>
+        {completed || !location ? null : (
+          <AddRow category={category} location={location} />
+        )}
       </div>
     </section>
   );

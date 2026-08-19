@@ -22,7 +22,7 @@ export default async function RegistryPage() {
           cta="Park it for later."
         />
       ) : null}
-      <TaskList tasks={tasks} />
+      <TaskList tasks={tasks} location="registry" />
     </main>
   );
 }

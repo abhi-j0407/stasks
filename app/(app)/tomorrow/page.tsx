@@ -22,7 +22,7 @@ export default async function TomorrowPage() {
           cta="Plan tomorrow."
         />
       ) : null}
-      <TaskList tasks={tasks} />
+      <TaskList tasks={tasks} location="tomorrow" />
     </main>
   );
 }
