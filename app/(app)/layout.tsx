@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
+import { Toaster } from "@/components/feedback/toaster";
 import { AppHeader } from "@/components/nav/app-header";
 import { AppNav } from "@/components/nav/app-nav";
 import { auth } from "@/lib/auth";
@@ -29,6 +30,7 @@ export default async function AppShellLayout({
           {children}
         </div>
       </div>
+      <Toaster />
     </div>
   );
 }

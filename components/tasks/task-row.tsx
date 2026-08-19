@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import type {
   DraggableAttributes,
   DraggableSyntheticListeners,
@@ -8,9 +11,12 @@ import type { TaskLocation, TaskRowData } from "@/lib/tasks/queries";
 type TaskRowProps = {
   task: TaskRowData;
   completed?: boolean;
+  completing?: boolean;
+  completePending?: boolean;
   showMoves?: boolean;
   movesPending?: boolean;
   onMove?: (toLocation: TaskLocation) => void;
+  onToggleComplete?: (input: { keyboard: boolean }) => void;
   handleRef?: (node: HTMLElement | null) => void;
   handleAttributes?: DraggableAttributes;
   handleListeners?: DraggableSyntheticListeners;
@@ -19,31 +25,65 @@ type TaskRowProps = {
 export function TaskRow({
   task,
   completed = false,
+  completing = false,
+  completePending = false,
   showMoves = false,
   movesPending = false,
   onMove,
+  onToggleComplete,
   handleRef,
   handleAttributes,
   handleListeners,
 }: TaskRowProps) {
   const sortable = handleRef && handleAttributes;
+  const [pressed, setPressed] = useState(false);
+  const canToggle = Boolean(onToggleComplete) && !completePending && !completing;
 
   return (
     <article
-      className={completed ? "task-row task-row--done" : "task-row"}
+      className={[
+        "task-row",
+        completed ? "task-row--done" : null,
+        completing ? "task-row--completing" : null,
+      ]
+        .filter(Boolean)
+        .join(" ")}
     >
       <button
         type="button"
-        className={
-          completed
-            ? "task-row__complete task-row__complete--done"
-            : "task-row__complete"
-        }
-        disabled
+        className={[
+          "task-row__complete",
+          completed ? "task-row__complete--done" : null,
+          pressed ? "task-row__complete--pressed" : null,
+        ]
+          .filter(Boolean)
+          .join(" ")}
+        disabled={!canToggle}
+        aria-pressed={completed}
         aria-label={
-          completed ? `${task.title}, completed` : `Complete ${task.title}`
+          completed ? `Undo complete ${task.title}` : `Complete ${task.title}`
         }
-        title="Complete comes later"
+        onPointerDown={(event) => {
+          if (!canToggle) {
+            return;
+          }
+          if (
+            event.pointerType === "mouse" ||
+            event.pointerType === "touch" ||
+            event.pointerType === "pen"
+          ) {
+            setPressed(true);
+          }
+        }}
+        onPointerUp={() => setPressed(false)}
+        onPointerCancel={() => setPressed(false)}
+        onPointerLeave={() => setPressed(false)}
+        onClick={(event) => {
+          if (!canToggle || !onToggleComplete) {
+            return;
+          }
+          onToggleComplete({ keyboard: event.detail === 0 });
+        }}
       >
         <span className="task-row__complete-mark">
           {completed ? svgCheck : null}
@@ -73,7 +113,7 @@ export function TaskRow({
         <TaskRowMoves
           title={task.title}
           fromLocation={task.location}
-          disabled={movesPending}
+          disabled={movesPending || completePending}
           onMove={onMove}
         />
       ) : null}

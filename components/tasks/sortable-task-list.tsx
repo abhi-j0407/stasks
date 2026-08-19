@@ -29,15 +29,19 @@ import { CSS } from "@dnd-kit/utilities";
 import {
   createContext,
   useContext,
+  useEffect,
   useOptimistic,
   useRef,
   useState,
   useTransition,
 } from "react";
+import { toast } from "@/components/feedback/toast-store";
 import { AddRow } from "@/components/tasks/add-row";
 import { TaskRow } from "@/components/tasks/task-row";
+import { completeTask } from "@/lib/actions/complete-task";
 import { moveTask } from "@/lib/actions/move-task";
 import { reorderTasks } from "@/lib/actions/reorder-tasks";
+import { COMPLETE_TOAST } from "@/lib/tasks/complete-task";
 import type { TaskLocation, TaskRowData } from "@/lib/tasks/queries";
 import {
   applyReorderPatches,
@@ -76,13 +80,23 @@ export function SortableTaskList({ tasks, location }: SortableTaskListProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [activation, setActivation] = useState<Activation | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [completingId, setCompletingId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const items = draft ?? optimisticTasks;
   const startRef = useRef(items);
+  const completeTimer = useRef<number | null>(null);
   const { personal, work } = splitByCategory(items);
   const activeTask = activeId
     ? items.find((task) => task.id === activeId)
     : undefined;
+
+  useEffect(() => {
+    return () => {
+      if (completeTimer.current !== null) {
+        window.clearTimeout(completeTimer.current);
+      }
+    };
+  }, []);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
@@ -164,8 +178,44 @@ export function SortableTaskList({ tasks, location }: SortableTaskListProps) {
     });
   }
 
+  function persistComplete(taskId: string, next: TaskRowData[]) {
+    setCompletingId(null);
+    startTransition(async () => {
+      setOptimisticTasks(next);
+      const result = await completeTask({ taskId });
+      if (!result.ok) {
+        setError(result.message);
+        return;
+      }
+      toast({ message: COMPLETE_TOAST, tone: "complete" });
+    });
+  }
+
+  function handleToggleComplete(taskId: string, keyboard: boolean) {
+    if (activeId || completingId || isPending) {
+      return;
+    }
+
+    const next = items.filter((task) => task.id !== taskId);
+    setError(null);
+
+    const skipMotion =
+      keyboard ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (skipMotion) {
+      persistComplete(taskId, next);
+      return;
+    }
+
+    setCompletingId(taskId);
+    completeTimer.current = window.setTimeout(() => {
+      persistComplete(taskId, next);
+    }, 200);
+  }
+
   function handleLocationMove(taskId: string, toLocation: TaskLocation) {
-    if (activeId) {
+    if (activeId || completingId) {
       return;
     }
 
@@ -210,15 +260,19 @@ export function SortableTaskList({ tasks, location }: SortableTaskListProps) {
             category="personal"
             tasks={personal}
             location={location}
-            movesPending={isPending}
+            completingId={completingId}
+            pending={isPending}
             onMove={handleLocationMove}
+            onToggleComplete={handleToggleComplete}
           />
           <CategorySection
             category="work"
             tasks={work}
             location={location}
-            movesPending={isPending}
+            completingId={completingId}
+            pending={isPending}
             onMove={handleLocationMove}
+            onToggleComplete={handleToggleComplete}
           />
         </div>
         <DragOverlay dropAnimation={snapDrop}>
@@ -235,8 +289,10 @@ type CategorySectionProps = {
   category: TaskCategory;
   tasks: TaskRowData[];
   location: TaskLocation;
-  movesPending: boolean;
+  completingId: string | null;
+  pending: boolean;
   onMove: (taskId: string, toLocation: TaskLocation) => void;
+  onToggleComplete: (taskId: string, keyboard: boolean) => void;
 };
 
 function OverlayTile({
@@ -268,8 +324,10 @@ function CategorySection({
   category,
   tasks,
   location,
-  movesPending,
+  completingId,
+  pending,
   onMove,
+  onToggleComplete,
 }: CategorySectionProps) {
   const { setNodeRef } = useDroppable({ id: category });
   const title = category === "personal" ? "Personal" : "Work";
@@ -299,8 +357,10 @@ function CategorySection({
               <SortableTaskRow
                 key={task.id}
                 task={task}
-                movesPending={movesPending}
+                completing={completingId === task.id}
+                pending={pending}
                 onMove={onMove}
+                onToggleComplete={onToggleComplete}
               />
             ))}
           </div>
@@ -313,12 +373,16 @@ function CategorySection({
 
 function SortableTaskRow({
   task,
-  movesPending,
+  completing,
+  pending,
   onMove,
+  onToggleComplete,
 }: {
   task: TaskRowData;
-  movesPending: boolean;
+  completing: boolean;
+  pending: boolean;
   onMove: (taskId: string, toLocation: TaskLocation) => void;
+  onToggleComplete: (taskId: string, keyboard: boolean) => void;
 }) {
   const activation = useContext(ActivationContext);
   const {
@@ -352,9 +416,14 @@ function SortableTaskRow({
     >
       <TaskRow
         task={task}
+        completing={completing}
+        completePending={pending}
         showMoves
-        movesPending={movesPending}
+        movesPending={pending}
         onMove={(toLocation) => onMove(task.id, toLocation)}
+        onToggleComplete={({ keyboard }) =>
+          onToggleComplete(task.id, keyboard)
+        }
         handleRef={setActivatorNodeRef}
         handleAttributes={attributes}
         handleListeners={listeners}
