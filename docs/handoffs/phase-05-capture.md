@@ -2,7 +2,7 @@
 
 **Objective:** Always-on add row per Personal/Work section on Today, Tomorrow, and Registry. Enter saves and focuses a new empty row. Notes persist. Keyboard path has zero motion.
 
-**Branch:** `feat/05-capture` from `development` (`50c5625`). `main` remains `5a83247`, frozen specs only. Not pushed.
+**Branch:** `feat/05-capture` (fast-forwarded into `development` at `6eca576`; `main` remains `5a83247`, frozen specs only). Not pushed.
 
 ## Commits
 
