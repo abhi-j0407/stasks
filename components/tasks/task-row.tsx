@@ -2,11 +2,15 @@ import type {
   DraggableAttributes,
   DraggableSyntheticListeners,
 } from "@dnd-kit/core";
-import type { TaskRowData } from "@/lib/tasks/queries";
+import { TaskRowMoves } from "@/components/tasks/task-row-moves";
+import type { TaskLocation, TaskRowData } from "@/lib/tasks/queries";
 
 type TaskRowProps = {
   task: TaskRowData;
   completed?: boolean;
+  showMoves?: boolean;
+  movesPending?: boolean;
+  onMove?: (toLocation: TaskLocation) => void;
   handleRef?: (node: HTMLElement | null) => void;
   handleAttributes?: DraggableAttributes;
   handleListeners?: DraggableSyntheticListeners;
@@ -15,6 +19,9 @@ type TaskRowProps = {
 export function TaskRow({
   task,
   completed = false,
+  showMoves = false,
+  movesPending = false,
+  onMove,
   handleRef,
   handleAttributes,
   handleListeners,
@@ -62,6 +69,14 @@ export function TaskRow({
         <p className="task-row__title">{task.title}</p>
         {task.notes ? <p className="task-row__notes">{task.notes}</p> : null}
       </div>
+      {showMoves && onMove ? (
+        <TaskRowMoves
+          title={task.title}
+          fromLocation={task.location}
+          disabled={movesPending}
+          onMove={onMove}
+        />
+      ) : null}
     </article>
   );
 }

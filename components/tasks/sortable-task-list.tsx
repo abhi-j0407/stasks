@@ -36,6 +36,7 @@ import {
 } from "react";
 import { AddRow } from "@/components/tasks/add-row";
 import { TaskRow } from "@/components/tasks/task-row";
+import { moveTask } from "@/lib/actions/move-task";
 import { reorderTasks } from "@/lib/actions/reorder-tasks";
 import type { TaskLocation, TaskRowData } from "@/lib/tasks/queries";
 import {
@@ -75,7 +76,7 @@ export function SortableTaskList({ tasks, location }: SortableTaskListProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [activation, setActivation] = useState<Activation | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
   const items = draft ?? optimisticTasks;
   const startRef = useRef(items);
   const { personal, work } = splitByCategory(items);
@@ -163,6 +164,26 @@ export function SortableTaskList({ tasks, location }: SortableTaskListProps) {
     });
   }
 
+  function handleLocationMove(taskId: string, toLocation: TaskLocation) {
+    if (activeId) {
+      return;
+    }
+
+    const next = items.filter((task) => task.id !== taskId);
+    setError(null);
+    startTransition(async () => {
+      setOptimisticTasks(next);
+      const result = await moveTask({
+        taskId,
+        fromLocation: location,
+        toLocation,
+      });
+      if (!result.ok) {
+        setError(result.message);
+      }
+    });
+  }
+
   return (
     <ActivationContext.Provider value={activation}>
       <DndContext
@@ -189,8 +210,16 @@ export function SortableTaskList({ tasks, location }: SortableTaskListProps) {
             category="personal"
             tasks={personal}
             location={location}
+            movesPending={isPending}
+            onMove={handleLocationMove}
           />
-          <CategorySection category="work" tasks={work} location={location} />
+          <CategorySection
+            category="work"
+            tasks={work}
+            location={location}
+            movesPending={isPending}
+            onMove={handleLocationMove}
+          />
         </div>
         <DragOverlay dropAnimation={snapDrop}>
           {activeTask ? (
@@ -206,6 +235,8 @@ type CategorySectionProps = {
   category: TaskCategory;
   tasks: TaskRowData[];
   location: TaskLocation;
+  movesPending: boolean;
+  onMove: (taskId: string, toLocation: TaskLocation) => void;
 };
 
 function OverlayTile({
@@ -233,7 +264,13 @@ function OverlayTile({
   );
 }
 
-function CategorySection({ category, tasks, location }: CategorySectionProps) {
+function CategorySection({
+  category,
+  tasks,
+  location,
+  movesPending,
+  onMove,
+}: CategorySectionProps) {
   const { setNodeRef } = useDroppable({ id: category });
   const title = category === "personal" ? "Personal" : "Work";
   const headingId = `list-${category}`;
@@ -259,7 +296,12 @@ function CategorySection({ category, tasks, location }: CategorySectionProps) {
         >
           <div className="task-section__items">
             {tasks.map((task) => (
-              <SortableTaskRow key={task.id} task={task} />
+              <SortableTaskRow
+                key={task.id}
+                task={task}
+                movesPending={movesPending}
+                onMove={onMove}
+              />
             ))}
           </div>
         </SortableContext>
@@ -269,7 +311,15 @@ function CategorySection({ category, tasks, location }: CategorySectionProps) {
   );
 }
 
-function SortableTaskRow({ task }: { task: TaskRowData }) {
+function SortableTaskRow({
+  task,
+  movesPending,
+  onMove,
+}: {
+  task: TaskRowData;
+  movesPending: boolean;
+  onMove: (taskId: string, toLocation: TaskLocation) => void;
+}) {
   const activation = useContext(ActivationContext);
   const {
     attributes,
@@ -302,6 +352,9 @@ function SortableTaskRow({ task }: { task: TaskRowData }) {
     >
       <TaskRow
         task={task}
+        showMoves
+        movesPending={movesPending}
+        onMove={(toLocation) => onMove(task.id, toLocation)}
         handleRef={setActivatorNodeRef}
         handleAttributes={attributes}
         handleListeners={listeners}

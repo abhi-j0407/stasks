@@ -572,6 +572,7 @@ button.task-row__handle:focus-visible {
 
 .task-row {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--space-12);
   padding: var(--space-12) var(--space-16);
@@ -653,6 +654,76 @@ button.task-row__handle:focus-visible {
   line-height: var(--leading-caption);
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.task-row__overflow {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: 0 -10px 0 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.task-row__overflow:focus-visible {
+  outline: 3px solid var(--color-macaw);
+  outline-offset: 2px;
+}
+
+.task-row__overflow-dots {
+  display: flex;
+  gap: 3px;
+}
+
+.task-row__overflow-dots span {
+  width: 4px;
+  height: 4px;
+  background-color: var(--color-hare);
+  border-radius: var(--radius-pill);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .task-row__overflow:hover .task-row__overflow-dots span {
+    background-color: var(--color-wolf);
+  }
+}
+
+.task-row__moves {
+  display: flex;
+  flex: 1 1 100%;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding-top: var(--space-12);
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transform-origin: top center;
+  transition:
+    opacity var(--motion-state) var(--ease-out-strong),
+    transform var(--motion-state) var(--ease-out-strong);
+}
+
+@starting-style {
+  .task-row__moves {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .task-row__moves {
+    transform: none;
+  }
+
+  @starting-style {
+    .task-row__moves {
+      opacity: 0;
+      transform: none;
+    }
+  }
 }
 
 .add-row {
