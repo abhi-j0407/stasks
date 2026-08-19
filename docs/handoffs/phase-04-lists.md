@@ -2,7 +2,7 @@
 
 **Objective:** Today / Tomorrow / Registry read from Neon, Personal then Work, completed-today well, empty-state SVGs. Read-only rows. No capture / reorder / moves / complete.
 
-**Branch:** `feat/04-lists` (merged into `development` after owner agreement; `main` remains `5a83247`, frozen specs only). Not pushed.
+**Branch:** `feat/04-lists` (fast-forwarded into `development` at `111a671`; `main` remains `5a83247`, frozen specs only). Not pushed.
 
 ## Commits
 
@@ -12,8 +12,11 @@
 - `3b74a5d` — Load Today, Tomorrow, and Registry from the database so seeded tasks land in the right subset.
 - `27db2e2` — Add a guarded dev seed so visual QA has Personal and Work rows without capture.
 - `6fd4a06` — Record the Phase 4 lists handoff so a cold session can verify the slice.
+- `d2a8f4e` — Record the Phase 4 handoff commit hash so a cold session can verify the work.
 - `605f41a` — Retry Neon HTTP on cold start so lists don't 500 after scale-to-zero.
+- `ba0aefa` — Record the Neon retry commit hash so a cold session can verify the work.
 - `70c4916` — Give list screens DESIGN.md rhythm so the completed well sits below Work, not flush against it.
+- `111a671` — Record the list-spacing commit so a cold session can verify Phase 4.
 
 ## Files touched
 
