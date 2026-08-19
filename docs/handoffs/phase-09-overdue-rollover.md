@@ -11,6 +11,7 @@
 - `bf0d747` — Gate the 04:00 cron behind CRON_SECRET so anonymous callers cannot roll the board.
 - `bcca4a4` — Apply missed 04:00 cuts in order on load so a failed cron cannot freeze yesterday's board.
 - `49843c5` — Record the Phase 9 overdue handoff so a cold session can verify the slice.
+- `4d0643a` — Record the Phase 9 handoff commit hash so a cold session can verify the work.
 
 ## Files touched
 
