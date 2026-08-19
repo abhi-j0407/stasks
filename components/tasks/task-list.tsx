@@ -1,4 +1,5 @@
 import { AddRow } from "@/components/tasks/add-row";
+import { SortableTaskList } from "@/components/tasks/sortable-task-list";
 import { TaskRow } from "@/components/tasks/task-row";
 import type { TaskLocation, TaskRowData } from "@/lib/tasks/queries";
 import {
@@ -12,18 +13,7 @@ type TaskListProps = {
 };
 
 export function TaskList({ tasks, location }: TaskListProps) {
-  const { personal, work } = splitByCategory(tasks);
-
-  return (
-    <div className="task-list">
-      <TaskSection
-        category="personal"
-        tasks={personal}
-        location={location}
-      />
-      <TaskSection category="work" tasks={work} location={location} />
-    </div>
-  );
+  return <SortableTaskList tasks={tasks} location={location} />;
 }
 
 type CompletedTodayWellProps = {

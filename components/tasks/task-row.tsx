@@ -1,11 +1,26 @@
+import type {
+  DraggableAttributes,
+  DraggableSyntheticListeners,
+} from "@dnd-kit/core";
 import type { TaskRowData } from "@/lib/tasks/queries";
 
 type TaskRowProps = {
   task: TaskRowData;
   completed?: boolean;
+  handleRef?: (node: HTMLElement | null) => void;
+  handleAttributes?: DraggableAttributes;
+  handleListeners?: DraggableSyntheticListeners;
 };
 
-export function TaskRow({ task, completed = false }: TaskRowProps) {
+export function TaskRow({
+  task,
+  completed = false,
+  handleRef,
+  handleAttributes,
+  handleListeners,
+}: TaskRowProps) {
+  const sortable = handleRef && handleAttributes;
+
   return (
     <article
       className={completed ? "task-row task-row--done" : "task-row"}
@@ -24,32 +39,25 @@ export function TaskRow({ task, completed = false }: TaskRowProps) {
         title="Complete comes later"
       >
         <span className="task-row__complete-mark">
-          {completed ? (
-            <svg
-              viewBox="0 0 16 16"
-              aria-hidden="true"
-              className="task-row__check"
-            >
-              <path
-                d="M3.5 8.5 6.5 11.5 12.5 4.5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          ) : null}
+          {completed ? svgCheck : null}
         </span>
       </button>
-      <span className="task-row__handle" aria-hidden="true">
-        <span />
-        <span />
-        <span />
-        <span />
-        <span />
-        <span />
-      </span>
+      {sortable ? (
+        <button
+          type="button"
+          className="task-row__handle"
+          ref={handleRef}
+          {...handleAttributes}
+          {...handleListeners}
+          aria-label={`Reorder ${task.title}`}
+        >
+          <HandleDots />
+        </button>
+      ) : (
+        <span className="task-row__handle" aria-hidden="true">
+          <HandleDots />
+        </span>
+      )}
       <div className="task-row__body">
         <p className="task-row__title">{task.title}</p>
         {task.notes ? <p className="task-row__notes">{task.notes}</p> : null}
@@ -57,3 +65,29 @@ export function TaskRow({ task, completed = false }: TaskRowProps) {
     </article>
   );
 }
+
+function HandleDots() {
+  return (
+    <>
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
+    </>
+  );
+}
+
+const svgCheck = (
+  <svg viewBox="0 0 16 16" aria-hidden="true" className="task-row__check">
+    <path
+      d="M3.5 8.5 6.5 11.5 12.5 4.5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);

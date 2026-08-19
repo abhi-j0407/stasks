@@ -113,3 +113,83 @@ export function planReorder(
 
   return [...reindex(personal), ...reindex(work)];
 }
+
+export function isSectionId(value: string): value is TaskCategory {
+  return value === "personal" || value === "work";
+}
+
+export function resolveDropTarget(
+  items: ReorderTaskRef[],
+  activeId: string,
+  overId: string,
+): Pick<ReorderMove, "taskId" | "toCategory" | "toIndex"> | null {
+  if (activeId === overId) {
+    return null;
+  }
+
+  const active = items.find((item) => item.id === activeId);
+  if (!active) {
+    return null;
+  }
+
+  const toCategory = isSectionId(overId)
+    ? overId
+    : (items.find((item) => item.id === overId)?.category ?? null);
+  if (!toCategory) {
+    return null;
+  }
+
+  if (isSectionId(overId)) {
+    const dest = items.filter(
+      (item) => item.category === toCategory && item.id !== activeId,
+    );
+    return { taskId: activeId, toCategory, toIndex: dest.length };
+  }
+
+  if (active.category === toCategory) {
+    const dest = items.filter((item) => item.category === toCategory);
+    const toIndex = dest.findIndex((item) => item.id === overId);
+    if (toIndex < 0) {
+      return null;
+    }
+    return { taskId: activeId, toCategory, toIndex };
+  }
+
+  const dest = items.filter((item) => item.category === toCategory);
+  const toIndex = dest.findIndex((item) => item.id === overId);
+  return {
+    taskId: activeId,
+    toCategory,
+    toIndex: toIndex < 0 ? dest.length : toIndex,
+  };
+}
+
+export function applyReorderPatches<T extends { id: string; category: TaskCategory }>(
+  items: T[],
+  patches: ReorderPatch[],
+): T[] {
+  const byId = new Map(items.map((item) => [item.id, item]));
+  const next: T[] = [];
+
+  for (const patch of patches) {
+    const item = byId.get(patch.id);
+    if (item) {
+      next.push({ ...item, category: patch.category });
+    }
+  }
+
+  return next;
+}
+
+export function sameTaskOrder<T extends { id: string; category: TaskCategory }>(
+  left: T[],
+  right: T[],
+): boolean {
+  return (
+    left.length === right.length &&
+    left.every(
+      (item, index) =>
+        item.id === right[index]?.id && item.category === right[index]?.category,
+    )
+  );
+}

@@ -2,6 +2,7 @@ import { describe, expect, test } from "vitest";
 import {
   parseReorderInput,
   planReorder,
+  resolveDropTarget,
   REORDER_AGAIN,
   type ReorderPatch,
 } from "./reorder-tasks";
@@ -158,5 +159,44 @@ describe("planReorder", () => {
         toIndex: 0,
       }),
     ).toBeNull();
+  });
+});
+
+describe("resolveDropTarget", () => {
+  const items = [
+    { id: P1, category: "personal" as const },
+    { id: P2, category: "personal" as const },
+    { id: P3, category: "personal" as const },
+    { id: W1, category: "work" as const },
+    { id: W2, category: "work" as const },
+  ];
+
+  test("same-list drag down uses the over item index including the active row", () => {
+    expect(resolveDropTarget(items, P1, P3)).toEqual({
+      taskId: P1,
+      toCategory: "personal",
+      toIndex: 2,
+    });
+    expect(
+      planReorder(items, resolveDropTarget(items, P1, P3)!).map((patch) => patch.id),
+    ).toEqual([P2, P3, P1, W1, W2]);
+  });
+
+  test("cross-subset drop onto an item inserts before it", () => {
+    expect(resolveDropTarget(items, P1, W2)).toEqual({
+      taskId: P1,
+      toCategory: "work",
+      toIndex: 1,
+    });
+  });
+
+  test("drop onto an empty section appends at 0", () => {
+    expect(
+      resolveDropTarget([{ id: P1, category: "personal" }], P1, "work"),
+    ).toEqual({ taskId: P1, toCategory: "work", toIndex: 0 });
+  });
+
+  test("over the active item is a no-op", () => {
+    expect(resolveDropTarget(items, P1, P1)).toBeNull();
   });
 });
