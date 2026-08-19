@@ -80,6 +80,7 @@
   --shadow-lip-4-macaw: 0 4px 0 var(--color-whale);
   --shadow-lip-4-cardinal: 0 4px 0 var(--color-fire-ant);
   --shadow-lip-2-swan: 0 2px 0 var(--color-swan);
+  --shadow-lip-4-swan: 0 4px 0 var(--color-swan);
   --shadow-modal: 0 8px 0 rgb(75 75 75 / 8%);
   --outline-swan: 2px solid var(--color-swan);
 
@@ -525,6 +526,48 @@ button.task-row__handle:active {
 button.task-row__handle:focus-visible {
   outline: 3px solid var(--color-macaw);
   outline-offset: 2px;
+}
+
+.task-row-overlay {
+  cursor: grabbing;
+}
+
+.task-row-overlay .task-row {
+  box-shadow: var(--shadow-lip-4-swan);
+  transform: scale(1.02);
+  transition:
+    transform 200ms ease-in-out,
+    box-shadow 200ms ease-in-out;
+}
+
+@starting-style {
+  .task-row-overlay:not(.task-row-overlay--keyboard) .task-row {
+    box-shadow: var(--shadow-lip-2-swan);
+    transform: scale(1);
+  }
+}
+
+.task-row-overlay--keyboard .task-row {
+  box-shadow: var(--shadow-lip-2-swan);
+  transform: none;
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .task-row-overlay .task-row {
+    transform: none;
+    transition: box-shadow 200ms ease-in-out;
+  }
+
+  @starting-style {
+    .task-row-overlay:not(.task-row-overlay--keyboard) .task-row {
+      transform: none;
+    }
+  }
+
+  .task-row-overlay--keyboard .task-row {
+    transition: none;
+  }
 }
 
 .task-row {

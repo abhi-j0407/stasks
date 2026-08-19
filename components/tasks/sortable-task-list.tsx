@@ -8,6 +8,7 @@ import {
   MeasuringStrategy,
   PointerSensor,
   pointerWithin,
+  useDndContext,
   useDroppable,
   useSensor,
   useSensors,
@@ -193,15 +194,7 @@ export function SortableTaskList({ tasks, location }: SortableTaskListProps) {
         </div>
         <DragOverlay dropAnimation={snapDrop}>
           {activeTask ? (
-            <div
-              className={
-                activation === "keyboard"
-                  ? "task-row-overlay task-row-overlay--keyboard"
-                  : "task-row-overlay"
-              }
-            >
-              <TaskRow task={activeTask} />
-            </div>
+            <OverlayTile task={activeTask} activation={activation} />
           ) : null}
         </DragOverlay>
       </DndContext>
@@ -214,6 +207,31 @@ type CategorySectionProps = {
   tasks: TaskRowData[];
   location: TaskLocation;
 };
+
+function OverlayTile({
+  task,
+  activation,
+}: {
+  task: TaskRowData;
+  activation: Activation | null;
+}) {
+  const { activeNodeRect } = useDndContext();
+
+  return (
+    <div
+      className={
+        activation === "keyboard"
+          ? "task-row-overlay task-row-overlay--keyboard"
+          : "task-row-overlay"
+      }
+      style={
+        activeNodeRect?.width ? { width: activeNodeRect.width } : undefined
+      }
+    >
+      <TaskRow task={task} />
+    </div>
+  );
+}
 
 function CategorySection({ category, tasks, location }: CategorySectionProps) {
   const { setNodeRef } = useDroppable({ id: category });
