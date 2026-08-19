@@ -172,14 +172,23 @@ describe("resolveDropTarget", () => {
   ];
 
   test("same-list drag down uses the over item index including the active row", () => {
-    expect(resolveDropTarget(items, P1, P3)).toEqual({
+    const move = resolveDropTarget(items, P1, P3);
+    expect(move).toEqual({
       taskId: P1,
       toCategory: "personal",
       toIndex: 2,
     });
-    expect(
-      planReorder(items, resolveDropTarget(items, P1, P3)!).map((patch) => patch.id),
-    ).toEqual([P2, P3, P1, W1, W2]);
+    expect(move).not.toBeNull();
+    if (!move) {
+      return;
+    }
+    expect(planReorder(items, move)?.map((patch) => patch.id)).toEqual([
+      P2,
+      P3,
+      P1,
+      W1,
+      W2,
+    ]);
   });
 
   test("cross-subset drop onto an item inserts before it", () => {
