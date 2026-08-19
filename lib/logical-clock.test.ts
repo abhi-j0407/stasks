@@ -1,5 +1,6 @@
 import { describe, expect, test } from "vitest";
 import {
+  addLogicalDays,
   formatCaptionDate,
   logicalDate,
   logicalTomorrow,
@@ -42,6 +43,14 @@ describe("logicalTomorrow", () => {
     expect(logicalTomorrow(new Date("2026-08-18T04:00:00+05:30"))).toBe(
       "2026-08-19",
     );
+  });
+});
+
+describe("addLogicalDays", () => {
+  test("walks civil dates without looping from epoch", () => {
+    expect(addLogicalDays("2026-08-19", 1)).toBe("2026-08-20");
+    expect(addLogicalDays("2026-08-19", -1)).toBe("2026-08-18");
+    expect(addLogicalDays("2026-08-31", 1)).toBe("2026-09-01");
   });
 });
 

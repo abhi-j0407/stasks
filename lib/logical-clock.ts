@@ -25,7 +25,7 @@ function isoDate(year: number, month: number, day: number): string {
   return `${String(year).padStart(4, "0")}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 }
 
-function addCalendarDays(iso: string, days: number): string {
+export function addLogicalDays(iso: string, days: number): string {
   const [year, month, day] = iso.split("-").map(Number);
   const utc = new Date(Date.UTC(year, month - 1, day + days));
   return isoDate(utc.getUTCFullYear(), utc.getUTCMonth() + 1, utc.getUTCDate());
@@ -40,14 +40,14 @@ export function logicalDate(now: Date = new Date()): string {
   const calendar = isoDate(year, month, day);
 
   if (hour < CUT_HOUR) {
-    return addCalendarDays(calendar, -1);
+    return addLogicalDays(calendar, -1);
   }
 
   return calendar;
 }
 
 export function logicalTomorrow(now: Date = new Date()): string {
-  return addCalendarDays(logicalDate(now), 1);
+  return addLogicalDays(logicalDate(now), 1);
 }
 
 const captionFormatter = new Intl.DateTimeFormat("en-GB", {

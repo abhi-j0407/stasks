@@ -1,11 +1,42 @@
-import { logicalDate } from "../logical-clock";
+import { desc, eq } from "drizzle-orm";
+import { db } from "@/lib/db";
+import { withNeonRetry } from "@/lib/db/retry";
+import { jobRuns } from "@/lib/db/schema";
+import { missingRolloverDates } from "@/lib/jobs/catch-up-plan";
+import { ROLLOVER_JOB, runRollover } from "@/lib/jobs/rollover";
+import { logicalDate } from "@/lib/logical-clock";
 
-/**
- * Phase 3 scaffolding only.
- * Phases 9–10 will read `job_runs`, walk missing dates in order, and call
- * `runRollover` / `runPromote`. Do not insert `job_runs` here: that would
- * make later catch-up skip real list mutations. Do not loop from epoch.
- */
+export { missingRolloverDates } from "@/lib/jobs/catch-up-plan";
+
 export async function catchUp(now: Date = new Date()) {
-  return { logicalDate: logicalDate(now) };
+  const t = logicalDate(now);
+
+  const [latestRow] = await withNeonRetry(() =>
+    db
+      .select({ logicalDate: jobRuns.logicalDate })
+      .from(jobRuns)
+      .where(eq(jobRuns.jobName, ROLLOVER_JOB))
+      .orderBy(desc(jobRuns.logicalDate))
+      .limit(1),
+  );
+
+  if (!latestRow) {
+    await withNeonRetry(() =>
+      db
+        .insert(jobRuns)
+        .values({
+          jobName: ROLLOVER_JOB,
+          logicalDate: t,
+          ranAt: now,
+        })
+        .onConflictDoNothing(),
+    );
+    return { logicalDate: t };
+  }
+
+  for (const next of missingRolloverDates(latestRow.logicalDate, t)) {
+    await runRollover(next);
+  }
+
+  return { logicalDate: t };
 }
