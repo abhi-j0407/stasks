@@ -8,6 +8,7 @@
 
 - `bb91b67` — Add a session-scoped move action so location can change without trusting the client for userId.
 - `dfb702d` — Wire row overflow Move actions so the six user-move pairs are reachable without drag-across-lists.
+- `fea2443` — Record the Phase 7 moves handoff so a cold session can verify the slice.
 
 ## Files touched
 
