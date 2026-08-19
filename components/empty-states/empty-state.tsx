@@ -27,6 +27,7 @@ export function EmptyState({ mark, headline, line, cta }: EmptyStateProps) {
           width={200}
           height={160}
           unoptimized
+          priority
         />
       </div>
       <h2 className="empty-state__headline">{headline}</h2>
