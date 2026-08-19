@@ -12,7 +12,7 @@
 - `3b74a5d` — Load Today, Tomorrow, and Registry from the database so seeded tasks land in the right subset.
 - `27db2e2` — Add a guarded dev seed so visual QA has Personal and Work rows without capture.
 - `6fd4a06` — Record the Phase 4 lists handoff so a cold session can verify the slice.
-- *(retry commit)* — Retry Neon HTTP on cold start so lists don't 500 after scale-to-zero.
+- `605f41a` — Retry Neon HTTP on cold start so lists don't 500 after scale-to-zero.
 
 ## Files touched
 
