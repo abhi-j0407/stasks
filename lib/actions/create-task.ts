@@ -5,10 +5,13 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { withNeonRetry } from "@/lib/db/retry";
 import { tasks } from "@/lib/db/schema";
+import { logicalDate } from "@/lib/logical-clock";
+import { recordTodayOccupancy } from "@/lib/occupancy";
 import {
   nextSortOrder,
   parseCreateTaskInput,
   SAVE_AGAIN,
+  shouldRecordTodayOccupancy,
 } from "@/lib/tasks/create-task-input";
 import { requireUserId } from "@/lib/tasks/queries";
 
@@ -54,19 +57,34 @@ export async function createTask(
         ),
     );
 
-    await withNeonRetry(() =>
-      db.insert(tasks).values({
-        userId,
-        title,
-        notes,
-        location,
-        category,
-        sortOrder: nextSortOrder(row?.maxSort ?? null),
-        overdue: false,
-        plannedDate: null,
-        completedAt: null,
-      }),
+    const [created] = await withNeonRetry(() =>
+      db
+        .insert(tasks)
+        .values({
+          userId,
+          title,
+          notes,
+          location,
+          category,
+          sortOrder: nextSortOrder(row?.maxSort ?? null),
+          overdue: false,
+          plannedDate: null,
+          completedAt: null,
+        })
+        .returning({ id: tasks.id }),
     );
+
+    if (!created) {
+      return { ok: false, message: SAVE_AGAIN };
+    }
+
+    if (shouldRecordTodayOccupancy(location)) {
+      await recordTodayOccupancy({
+        userId,
+        taskId: created.id,
+        logicalDate: logicalDate(),
+      });
+    }
   } catch {
     return { ok: false, message: SAVE_AGAIN };
   }
