@@ -2,7 +2,7 @@
 
 **Objective:** Drag-reorder within a list. Crossing Personal/Work on the same list changes `category` and `sortOrder`. Order persists after reload. Cannot drag to another location list.
 
-**Branch:** `feat/06-reorder` from `development` at `dbda507`. Not merged. Not pushed. `main` remains `5a83247` (frozen specs only).
+**Branch:** `feat/06-reorder` (fast-forwarded into `development` at `68d1cfd`; `main` remains `5a83247`, frozen specs only). Not pushed.
 
 ## Commits
 
@@ -70,6 +70,5 @@ npm run dev
 
 ## Open questions
 
-- Merge `feat/06-reorder` into `development` needs owner agreement (no force). Leave `main` alone.
 - P2-1 remains open (not a Phase 6 blocker).
-- Do not push. Phase 13 only.
+- Do not push. Leave `main` alone. Phase 13 only.
