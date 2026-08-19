@@ -9,6 +9,7 @@
 - `da9329f` — Add a session-scoped create-task action so capture can persist without trusting the client for userId.
 - `e6a7d54` — Record Today occupancy when capturing onto Today so completion rate later has a denominator.
 - `78ed5d1` — Wire the add row so Enter saves and keeps the keyboard on an empty row.
+- `bf97585` — Record the Phase 5 capture handoff so a cold session can verify the slice.
 
 ## Files touched
 
