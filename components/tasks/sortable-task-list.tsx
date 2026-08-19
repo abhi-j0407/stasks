@@ -38,6 +38,7 @@ import {
 import { toast } from "@/components/feedback/toast-store";
 import { AddRow } from "@/components/tasks/add-row";
 import { TaskRow } from "@/components/tasks/task-row";
+import { clearOverdue } from "@/lib/actions/clear-overdue";
 import { completeTask } from "@/lib/actions/complete-task";
 import { deleteTask, restoreDeletedTask } from "@/lib/actions/delete-task";
 import { moveTask } from "@/lib/actions/move-task";
@@ -269,6 +270,24 @@ export function SortableTaskList({ tasks, location }: SortableTaskListProps) {
     });
   }
 
+  function handleClearOverdue(taskId: string) {
+    if (activeId || completingId) {
+      return;
+    }
+
+    const next = items.map((task) =>
+      task.id === taskId ? { ...task, overdue: false } : task,
+    );
+    setError(null);
+    startTransition(async () => {
+      setOptimisticTasks(next);
+      const result = await clearOverdue({ taskId });
+      if (!result.ok) {
+        setError(result.message);
+      }
+    });
+  }
+
   return (
     <ActivationContext.Provider value={activation}>
       <DndContext
@@ -299,6 +318,7 @@ export function SortableTaskList({ tasks, location }: SortableTaskListProps) {
             pending={isPending}
             onMove={handleLocationMove}
             onDelete={handleDelete}
+            onClearOverdue={handleClearOverdue}
             onToggleComplete={handleToggleComplete}
           />
           <CategorySection
@@ -309,6 +329,7 @@ export function SortableTaskList({ tasks, location }: SortableTaskListProps) {
             pending={isPending}
             onMove={handleLocationMove}
             onDelete={handleDelete}
+            onClearOverdue={handleClearOverdue}
             onToggleComplete={handleToggleComplete}
           />
         </div>
@@ -330,6 +351,7 @@ type CategorySectionProps = {
   pending: boolean;
   onMove: (taskId: string, toLocation: TaskLocation) => void;
   onDelete: (taskId: string) => void;
+  onClearOverdue: (taskId: string) => void;
   onToggleComplete: (taskId: string, keyboard: boolean) => void;
 };
 
@@ -366,6 +388,7 @@ function CategorySection({
   pending,
   onMove,
   onDelete,
+  onClearOverdue,
   onToggleComplete,
 }: CategorySectionProps) {
   const { setNodeRef } = useDroppable({ id: category });
@@ -400,6 +423,7 @@ function CategorySection({
                 pending={pending}
                 onMove={onMove}
                 onDelete={onDelete}
+                onClearOverdue={onClearOverdue}
                 onToggleComplete={onToggleComplete}
               />
             ))}
@@ -417,6 +441,7 @@ function SortableTaskRow({
   pending,
   onMove,
   onDelete,
+  onClearOverdue,
   onToggleComplete,
 }: {
   task: TaskRowData;
@@ -424,6 +449,7 @@ function SortableTaskRow({
   pending: boolean;
   onMove: (taskId: string, toLocation: TaskLocation) => void;
   onDelete: (taskId: string) => void;
+  onClearOverdue: (taskId: string) => void;
   onToggleComplete: (taskId: string, keyboard: boolean) => void;
 }) {
   const activation = useContext(ActivationContext);
@@ -464,6 +490,7 @@ function SortableTaskRow({
         movesPending={pending}
         onMove={(toLocation) => onMove(task.id, toLocation)}
         onDelete={() => onDelete(task.id)}
+        onClearOverdue={() => onClearOverdue(task.id)}
         onToggleComplete={({ keyboard }) =>
           onToggleComplete(task.id, keyboard)
         }

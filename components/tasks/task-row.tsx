@@ -6,6 +6,10 @@ import type {
   DraggableSyntheticListeners,
 } from "@dnd-kit/core";
 import { TaskRowMoves } from "@/components/tasks/task-row-moves";
+import {
+  OVERDUE_CHIP,
+  overdueChipAria,
+} from "@/lib/tasks/clear-overdue";
 import type { TaskLocation, TaskRowData } from "@/lib/tasks/queries";
 
 type TaskRowProps = {
@@ -17,6 +21,7 @@ type TaskRowProps = {
   movesPending?: boolean;
   onMove?: (toLocation: TaskLocation) => void;
   onDelete?: () => void;
+  onClearOverdue?: (input: { keyboard: boolean }) => void;
   onToggleComplete?: (input: { keyboard: boolean }) => void;
   handleRef?: (node: HTMLElement | null) => void;
   handleAttributes?: DraggableAttributes;
@@ -32,6 +37,7 @@ export function TaskRow({
   movesPending = false,
   onMove,
   onDelete,
+  onClearOverdue,
   onToggleComplete,
   handleRef,
   handleAttributes,
@@ -39,7 +45,11 @@ export function TaskRow({
 }: TaskRowProps) {
   const sortable = handleRef && handleAttributes;
   const [pressed, setPressed] = useState(false);
+  const [chipPressed, setChipPressed] = useState(false);
   const canToggle = Boolean(onToggleComplete) && !completePending && !completing;
+  const showOverdue = task.overdue && !completed;
+  const canClearOverdue =
+    showOverdue && Boolean(onClearOverdue) && !completePending && !movesPending;
 
   return (
     <article
@@ -47,6 +57,7 @@ export function TaskRow({
         "task-row",
         completed ? "task-row--done" : null,
         completing ? "task-row--completing" : null,
+        showOverdue ? "task-row--overdue" : null,
       ]
         .filter(Boolean)
         .join(" ")}
@@ -111,13 +122,56 @@ export function TaskRow({
         <p className="task-row__title">{task.title}</p>
         {task.notes ? <p className="task-row__notes">{task.notes}</p> : null}
       </div>
-      {(showMoves && onMove) || onDelete ? (
+      {showOverdue ? (
+        <button
+          type="button"
+          className={[
+            "task-row__overdue-chip",
+            chipPressed ? "task-row__overdue-chip--pressed" : null,
+          ]
+            .filter(Boolean)
+            .join(" ")}
+          disabled={!canClearOverdue}
+          aria-label={overdueChipAria(task.title)}
+          onPointerDown={(event) => {
+            if (!canClearOverdue) {
+              return;
+            }
+            if (
+              event.pointerType === "mouse" ||
+              event.pointerType === "touch" ||
+              event.pointerType === "pen"
+            ) {
+              setChipPressed(true);
+            }
+          }}
+          onPointerUp={() => setChipPressed(false)}
+          onPointerCancel={() => setChipPressed(false)}
+          onPointerLeave={() => setChipPressed(false)}
+          onClick={(event) => {
+            if (!canClearOverdue || !onClearOverdue) {
+              return;
+            }
+            setChipPressed(false);
+            onClearOverdue({ keyboard: event.detail === 0 });
+          }}
+        >
+          <span className="task-row__overdue-pill">{OVERDUE_CHIP}</span>
+        </button>
+      ) : null}
+      {(showMoves && onMove) || onDelete || (showOverdue && onClearOverdue) ? (
         <TaskRowMoves
           title={task.title}
           fromLocation={task.location}
           disabled={movesPending || completePending}
           showMoves={Boolean(showMoves && onMove)}
+          showClearOverdue={showOverdue && Boolean(onClearOverdue)}
           onMove={onMove}
+          onClearOverdue={
+            onClearOverdue
+              ? () => onClearOverdue({ keyboard: false })
+              : undefined
+          }
           onDelete={onDelete}
         />
       ) : null}

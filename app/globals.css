@@ -586,6 +586,10 @@ button.task-row__handle:focus-visible {
     transform var(--motion-state) var(--ease-out-strong);
 }
 
+.task-row--overdue {
+  background-color: var(--color-walking-fish);
+}
+
 .task-row--completing {
   background-color: var(--color-sea-sponge);
   opacity: 0;
@@ -665,6 +669,10 @@ button.task-row__handle:focus-visible {
   .task-row__complete--done.task-row__complete--pressed .task-row__complete-mark {
     transform: none;
   }
+
+  .task-row__overdue-chip--pressed .task-row__overdue-pill {
+    transform: none;
+  }
 }
 
 .task-row__handle {
@@ -703,6 +711,48 @@ button.task-row__handle:focus-visible {
   line-height: var(--leading-caption);
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.task-row__overdue-chip {
+  display: grid;
+  flex: none;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.task-row__overdue-chip:disabled {
+  cursor: not-allowed;
+}
+
+.task-row__overdue-chip:focus-visible {
+  outline: 3px solid var(--color-macaw);
+  outline-offset: 2px;
+}
+
+.task-row__overdue-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  background-color: var(--color-cardinal);
+  color: var(--color-snow);
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: var(--font-weight-extrabold);
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: transform var(--motion-press) var(--ease-out-strong);
+}
+
+.task-row__overdue-chip--pressed .task-row__overdue-pill {
+  transform: scale(0.97);
 }
 
 .task-row__overflow {
