@@ -2,7 +2,7 @@
 
 **Objective:** Today / Tomorrow / Registry read from Neon, Personal then Work, completed-today well, empty-state SVGs. Read-only rows. No capture / reorder / moves / complete.
 
-**Branch:** `feat/04-lists` (not merged into `development` yet; `main` remains `5a83247`, frozen specs only). Not pushed.
+**Branch:** `feat/04-lists` (merged into `development` after owner agreement; `main` remains `5a83247`, frozen specs only). Not pushed.
 
 ## Commits
 
@@ -13,11 +13,12 @@
 - `27db2e2` — Add a guarded dev seed so visual QA has Personal and Work rows without capture.
 - `6fd4a06` — Record the Phase 4 lists handoff so a cold session can verify the slice.
 - `605f41a` — Retry Neon HTTP on cold start so lists don't 500 after scale-to-zero.
+- `70c4916` — Give list screens DESIGN.md rhythm so the completed well sits below Work, not flush against it.
 
 ## Files touched
 
 - `lib/db/retry.ts`, `lib/db/retry.test.ts` — retry `fetch failed` while Neon compute wakes
-- `lib/tasks/split-by-category.ts`, `lib/tasks/queries.test.ts` — Personal then Work split
+- `lib/tasks/queries.ts` — `requireUserId()`, `listIncomplete`, `listCompletedToday`; scoped to session uuid; Neon retry
 - `components/tasks/task-row.tsx` — Snow / 2px Swan / 12px / lip 2px / 17px Eel; complete + drag visual only
 - `components/tasks/add-row.tsx` — dashed Swan chrome, disabled input, no submit
 - `components/tasks/task-list.tsx` — Personal then Work sections; completed-today well
@@ -75,6 +76,6 @@ npm run dev
 
 ## Open questions
 
-- Owner must sign in once (if not already) so seed can insert against the Auth.js `users` row.
-- Merge `feat/04-lists` into `development` when the owner agrees. Do not push. Leave `main` alone.
+- Seed already ran for the allowlisted account after sign-in. Re-running `npm run db:seed` is a no-op if tasks exist.
 - P2-1 remains open (not a Phase 4 blocker).
+- Do not push. Leave `main` alone.
