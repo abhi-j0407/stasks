@@ -11,6 +11,7 @@
 - `73fadb9` — Wire complete and undo so a pointer press can ease the row away while keyboard stays instant.
 - `89f7b87` — Add kind delete confirm and a 5s restore so mistakes never write Failed or streak events.
 - `efc8059` — Record the Phase 8 complete handoff so a cold session can verify the slice.
+- `003bcd9` — Record the Phase 8 handoff commit hash so a cold session can verify the work.
 
 ## Files touched
 
