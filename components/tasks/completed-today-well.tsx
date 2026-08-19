@@ -1,8 +1,11 @@
 "use client";
 
 import { useOptimistic, useState, useTransition } from "react";
+import { toast } from "@/components/feedback/toast-store";
 import { TaskRow } from "@/components/tasks/task-row";
 import { undoComplete } from "@/lib/actions/complete-task";
+import { deleteTask, restoreDeletedTask } from "@/lib/actions/delete-task";
+import { DELETE_TOAST } from "@/lib/tasks/delete-task";
 import type { TaskRowData } from "@/lib/tasks/queries";
 import {
   splitByCategory,
@@ -35,6 +38,39 @@ export function CompletedTodayWell({ tasks }: CompletedTodayWellProps) {
     });
   }
 
+  function handleDelete(taskId: string) {
+    if (isPending) {
+      return;
+    }
+
+    const next = optimisticTasks.filter((task) => task.id !== taskId);
+    setError(null);
+    startTransition(async () => {
+      setOptimisticTasks(next);
+      const result = await deleteTask({ taskId });
+      if (!result.ok) {
+        setError(result.message);
+        return;
+      }
+      toast({
+        message: DELETE_TOAST,
+        tone: "delete",
+        actionLabel: "Undo",
+        durationMs: 5000,
+        onAction: () => {
+          startTransition(async () => {
+            const restored = await restoreDeletedTask({
+              snapshot: result.snapshot,
+            });
+            if (!restored.ok) {
+              setError(restored.message);
+            }
+          });
+        },
+      });
+    });
+  }
+
   if (optimisticTasks.length === 0 && !error) {
     return null;
   }
@@ -58,6 +94,7 @@ export function CompletedTodayWell({ tasks }: CompletedTodayWellProps) {
           tasks={personal}
           pending={isPending}
           onUndo={handleUndo}
+          onDelete={handleDelete}
         />
       ) : null}
       {work.length > 0 ? (
@@ -66,6 +103,7 @@ export function CompletedTodayWell({ tasks }: CompletedTodayWellProps) {
           tasks={work}
           pending={isPending}
           onUndo={handleUndo}
+          onDelete={handleDelete}
         />
       ) : null}
     </section>
@@ -77,11 +115,13 @@ function CompletedSection({
   tasks,
   pending,
   onUndo,
+  onDelete,
 }: {
   category: TaskCategory;
   tasks: TaskRowData[];
   pending: boolean;
   onUndo: (taskId: string) => void;
+  onDelete: (taskId: string) => void;
 }) {
   const title = category === "personal" ? "Personal" : "Work";
   const headingId = `completed-${category}`;
@@ -106,6 +146,7 @@ function CompletedSection({
               task={task}
               completed
               completePending={pending}
+              onDelete={() => onDelete(task.id)}
               onToggleComplete={() => onUndo(task.id)}
             />
           ))}

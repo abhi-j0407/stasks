@@ -16,6 +16,7 @@ type TaskRowProps = {
   showMoves?: boolean;
   movesPending?: boolean;
   onMove?: (toLocation: TaskLocation) => void;
+  onDelete?: () => void;
   onToggleComplete?: (input: { keyboard: boolean }) => void;
   handleRef?: (node: HTMLElement | null) => void;
   handleAttributes?: DraggableAttributes;
@@ -30,6 +31,7 @@ export function TaskRow({
   showMoves = false,
   movesPending = false,
   onMove,
+  onDelete,
   onToggleComplete,
   handleRef,
   handleAttributes,
@@ -109,12 +111,14 @@ export function TaskRow({
         <p className="task-row__title">{task.title}</p>
         {task.notes ? <p className="task-row__notes">{task.notes}</p> : null}
       </div>
-      {showMoves && onMove ? (
+      {(showMoves && onMove) || onDelete ? (
         <TaskRowMoves
           title={task.title}
           fromLocation={task.location}
           disabled={movesPending || completePending}
+          showMoves={Boolean(showMoves && onMove)}
           onMove={onMove}
+          onDelete={onDelete}
         />
       ) : null}
     </article>

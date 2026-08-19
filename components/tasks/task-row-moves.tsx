@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
+import { ConfirmSheet } from "@/components/feedback/confirm-sheet";
 import { LipButton } from "@/components/buttons/lip-button";
 import {
   destinationsFor,
@@ -8,23 +9,39 @@ import {
   moveButtonVariant,
   type TaskLocation,
 } from "@/lib/tasks/move-task";
+import {
+  DELETE_CONFIRM,
+  DELETE_CONFIRM_BODY,
+  DELETE_CONFIRM_TITLE,
+  DELETE_KEEP,
+} from "@/lib/tasks/delete-task";
 
 type TaskRowMovesProps = {
   title: string;
   fromLocation: TaskLocation;
   disabled?: boolean;
-  onMove: (toLocation: TaskLocation) => void;
+  showMoves?: boolean;
+  onMove?: (toLocation: TaskLocation) => void;
+  onDelete?: () => void;
 };
 
 export function TaskRowMoves({
   title,
   fromLocation,
   disabled = false,
+  showMoves = true,
   onMove,
+  onDelete,
 }: TaskRowMovesProps) {
   const [open, setOpen] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const panelId = useId();
-  const destinations = destinationsFor(fromLocation);
+  const destinations = showMoves && onMove ? destinationsFor(fromLocation) : [];
+  const hasPanel = destinations.length > 0 || Boolean(onDelete);
+
+  if (!hasPanel) {
+    return null;
+  }
 
   return (
     <>
@@ -33,7 +50,7 @@ export function TaskRowMoves({
         className="task-row__overflow"
         aria-expanded={open}
         aria-controls={panelId}
-        aria-label={`Move actions for ${title}`}
+        aria-label={`Actions for ${title}`}
         onClick={() => setOpen((current) => !current)}
       >
         <span className="task-row__overflow-dots" aria-hidden="true">
@@ -50,13 +67,36 @@ export function TaskRowMoves({
               variant={moveButtonVariant(toLocation)}
               className="lip-button--block"
               disabled={disabled}
-              onClick={() => onMove(toLocation)}
+              onClick={() => onMove?.(toLocation)}
             >
               {MOVE_LABEL[toLocation]}
             </LipButton>
           ))}
+          {onDelete ? (
+            <LipButton
+              variant="destructive"
+              className="lip-button--block"
+              disabled={disabled}
+              onClick={() => setConfirmDelete(true)}
+            >
+              {DELETE_CONFIRM}
+            </LipButton>
+          ) : null}
         </div>
       ) : null}
+      <ConfirmSheet
+        open={confirmDelete}
+        title={DELETE_CONFIRM_TITLE}
+        body={DELETE_CONFIRM_BODY}
+        confirmLabel={DELETE_CONFIRM}
+        cancelLabel={DELETE_KEEP}
+        onCancel={() => setConfirmDelete(false)}
+        onConfirm={() => {
+          setConfirmDelete(false);
+          setOpen(false);
+          onDelete?.();
+        }}
+      />
     </>
   );
 }

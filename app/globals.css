@@ -1134,6 +1134,48 @@ button.task-row__handle:focus-visible {
   outline-offset: 2px;
 }
 
+.confirm-sheet-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  padding: var(--space-16);
+  background-color: var(--color-scrim);
+}
+
+.confirm-sheet {
+  width: min(100%, 22rem);
+  padding: var(--space-20);
+  background-color: var(--color-snow);
+  border: 2px solid var(--color-swan);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-modal);
+}
+
+.confirm-sheet__title {
+  margin: 0;
+  color: var(--color-eel);
+  font-size: var(--font-size-subtitle);
+  font-weight: var(--font-weight-extrabold);
+  line-height: var(--leading-subtitle);
+}
+
+.confirm-sheet__body {
+  margin: var(--space-8) 0 0;
+  color: var(--color-wolf);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-body);
+}
+
+.confirm-sheet__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  margin-top: var(--space-16);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .toast {
     transform: none;

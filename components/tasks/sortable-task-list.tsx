@@ -39,9 +39,11 @@ import { toast } from "@/components/feedback/toast-store";
 import { AddRow } from "@/components/tasks/add-row";
 import { TaskRow } from "@/components/tasks/task-row";
 import { completeTask } from "@/lib/actions/complete-task";
+import { deleteTask, restoreDeletedTask } from "@/lib/actions/delete-task";
 import { moveTask } from "@/lib/actions/move-task";
 import { reorderTasks } from "@/lib/actions/reorder-tasks";
 import { COMPLETE_TOAST } from "@/lib/tasks/complete-task";
+import { DELETE_TOAST } from "@/lib/tasks/delete-task";
 import type { TaskLocation, TaskRowData } from "@/lib/tasks/queries";
 import {
   applyReorderPatches,
@@ -214,6 +216,39 @@ export function SortableTaskList({ tasks, location }: SortableTaskListProps) {
     }, 200);
   }
 
+  function handleDelete(taskId: string) {
+    if (activeId || completingId) {
+      return;
+    }
+
+    const next = items.filter((task) => task.id !== taskId);
+    setError(null);
+    startTransition(async () => {
+      setOptimisticTasks(next);
+      const result = await deleteTask({ taskId });
+      if (!result.ok) {
+        setError(result.message);
+        return;
+      }
+      toast({
+        message: DELETE_TOAST,
+        tone: "delete",
+        actionLabel: "Undo",
+        durationMs: 5000,
+        onAction: () => {
+          startTransition(async () => {
+            const restored = await restoreDeletedTask({
+              snapshot: result.snapshot,
+            });
+            if (!restored.ok) {
+              setError(restored.message);
+            }
+          });
+        },
+      });
+    });
+  }
+
   function handleLocationMove(taskId: string, toLocation: TaskLocation) {
     if (activeId || completingId) {
       return;
@@ -263,6 +298,7 @@ export function SortableTaskList({ tasks, location }: SortableTaskListProps) {
             completingId={completingId}
             pending={isPending}
             onMove={handleLocationMove}
+            onDelete={handleDelete}
             onToggleComplete={handleToggleComplete}
           />
           <CategorySection
@@ -272,6 +308,7 @@ export function SortableTaskList({ tasks, location }: SortableTaskListProps) {
             completingId={completingId}
             pending={isPending}
             onMove={handleLocationMove}
+            onDelete={handleDelete}
             onToggleComplete={handleToggleComplete}
           />
         </div>
@@ -292,6 +329,7 @@ type CategorySectionProps = {
   completingId: string | null;
   pending: boolean;
   onMove: (taskId: string, toLocation: TaskLocation) => void;
+  onDelete: (taskId: string) => void;
   onToggleComplete: (taskId: string, keyboard: boolean) => void;
 };
 
@@ -327,6 +365,7 @@ function CategorySection({
   completingId,
   pending,
   onMove,
+  onDelete,
   onToggleComplete,
 }: CategorySectionProps) {
   const { setNodeRef } = useDroppable({ id: category });
@@ -360,6 +399,7 @@ function CategorySection({
                 completing={completingId === task.id}
                 pending={pending}
                 onMove={onMove}
+                onDelete={onDelete}
                 onToggleComplete={onToggleComplete}
               />
             ))}
@@ -376,12 +416,14 @@ function SortableTaskRow({
   completing,
   pending,
   onMove,
+  onDelete,
   onToggleComplete,
 }: {
   task: TaskRowData;
   completing: boolean;
   pending: boolean;
   onMove: (taskId: string, toLocation: TaskLocation) => void;
+  onDelete: (taskId: string) => void;
   onToggleComplete: (taskId: string, keyboard: boolean) => void;
 }) {
   const activation = useContext(ActivationContext);
@@ -421,6 +463,7 @@ function SortableTaskRow({
         showMoves
         movesPending={pending}
         onMove={(toLocation) => onMove(task.id, toLocation)}
+        onDelete={() => onDelete(task.id)}
         onToggleComplete={({ keyboard }) =>
           onToggleComplete(task.id, keyboard)
         }
