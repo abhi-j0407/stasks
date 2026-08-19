@@ -10,6 +10,7 @@
 - `c65cd67` — Add session-scoped complete, undo, and delete actions so list writes never trust the client for userId.
 - `73fadb9` — Wire complete and undo so a pointer press can ease the row away while keyboard stays instant.
 - `89f7b87` — Add kind delete confirm and a 5s restore so mistakes never write Failed or streak events.
+- `efc8059` — Record the Phase 8 complete handoff so a cold session can verify the slice.
 
 ## Files touched
 
