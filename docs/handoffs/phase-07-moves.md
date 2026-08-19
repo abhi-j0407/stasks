@@ -2,13 +2,14 @@
 
 **Objective:** Explicit Move to Today / Tomorrow / Registry from the row overflow. Not drag-across-lists. Destination append. Occupancy insert when the destination is Today. Overdue, notes, category, and planned date stay as-is.
 
-**Branch:** `feat/07-moves` from `development` (`6083e12`). `main` remains `5a83247`, frozen specs only. Not pushed. Not merged.
+**Branch:** `feat/07-moves` (fast-forwarded into `development` at `741be65`; `main` remains `5a83247`, frozen specs only). Not pushed.
 
 ## Commits
 
 - `bb91b67` — Add a session-scoped move action so location can change without trusting the client for userId.
 - `dfb702d` — Wire row overflow Move actions so the six user-move pairs are reachable without drag-across-lists.
 - `fea2443` — Record the Phase 7 moves handoff so a cold session can verify the slice.
+- `741be65` — Record the Phase 7 handoff commit hash so a cold session can verify the work.
 
 ## Files touched
 
@@ -76,4 +77,4 @@ npm run dev
 - P2-1 remains open (not a Phase 7 blocker).
 - Occupancy is still write-only; there is no UI to inspect it.
 - Do not push. Leave `main` alone. Phase 13 only.
-- Merge `feat/07-moves` into `development` only if the owner agrees (no force).
+- `feat/07-moves` is fast-forwarded into `development` at `741be65`.
