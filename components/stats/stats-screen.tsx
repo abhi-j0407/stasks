@@ -82,6 +82,16 @@ function WindowCard({
         <p className="stats-number">{window.total}</p>
       </header>
       <CountBars counts={window.counts} maxCount={window.maxCount} dense={dense} />
+      <div className="stats-split">
+        <p className="stats-split__item stats-split__item--personal">
+          <span className="stats-split__label">Personal</span>
+          <span className="stats-number">{window.split.personal}</span>
+        </p>
+        <p className="stats-split__item stats-split__item--work">
+          <span className="stats-split__label">Work</span>
+          <span className="stats-number">{window.split.work}</span>
+        </p>
+      </div>
     </section>
   );
 }
