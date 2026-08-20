@@ -2,7 +2,7 @@
 
 **Objective:** Current and best streak per PRD §17; header pill + first-of-day tick; milestones 7 / 30 / 100 only.
 
-**Branch:** `feat/11-streak` from `development` at `2e27210`. `main` remains `5a83247` (frozen specs only). Not pushed.
+**Branch:** `feat/11-streak` (fast-forwarded into `development` at `6b91626`; `main` remains `5a83247`, frozen specs only). Not pushed.
 
 ## Commits
 
@@ -11,6 +11,7 @@
 - `4a35e01` — Gate streak celebration to the first complete of the day so regular days tick and only 7, 30, and 100 burst.
 - `84f48eb` — Celebrate the first complete of the day with Keep going and a +1 tick so later completes stay a quiet Nice.
 - `984eb6e` — Record the Phase 11 streak handoff so a cold session can verify the slice.
+- `6b91626` — Record the Phase 11 handoff commit hash so a cold session can verify the work.
 
 ## Files touched
 
@@ -70,6 +71,6 @@ npm run dev
 ## Open questions
 
 - P2-1 remains open (not a Phase 11 blocker).
-- Merge `feat/11-streak` into `development` when the owner agrees. No force. Do not push. Leave `main` alone. Phase 13 only.
+- Merge `feat/11-streak` was fast-forwarded into `development` at `6b91626`. Do not push. Leave `main` alone. Phase 13 only.
 - `CRON_SECRET` still unset locally — not a Phase 11 blocker.
 - No Clerk, Auth0, or RaftLabs.
