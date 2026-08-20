@@ -2,17 +2,19 @@
 
 **Objective:** Personal GitHub private repo, Vercel Hobby, Neon production, both crons, `development` merged to `main` with owner agreement.
 
-**Branch:** `feat/13-deploy` from `development` at `afb70e3`. Owner agreed: **`main` = production**, **`development` = preview**. Merge the app to `main` (no force). Do not force-push `main`.
+**Branch:** `feat/13-deploy` merged into `development`, then `development` fast-forwarded into `main` at `109859d` (owner agreed; no force). **`main` = production. `development` = preview.**
 
 **GitHub:** personal private [https://github.com/abhi-j0407/stasks.git](https://github.com/abhi-j0407/stasks.git) (SSH `git@github.com:abhi-j0407/stasks.git`). Not a company org.
 
-**Vercel:** Hobby project `stasks` on personal team `abhij0407's projects` (`prj_8JNruPS83pMuAXlDEbLS2H1PpB5p`), linked to `abhi-j0407/stasks`. **Production Branch stays `main`.** `development` is preview. Production URL: not confirmed in this file until the owner sends it (no secrets).
+**Vercel:** Hobby project `stasks` on personal team `abhij0407's projects` (`prj_8JNruPS83pMuAXlDEbLS2H1PpB5p`), linked to `abhi-j0407/stasks`. Production Branch is `main`. Preview is `development`. Production URL: not confirmed in this file until the owner sends it (no secrets).
 
 ## Commits
 
 - `f2a98bb` — Record orchestrator Phase 12/13 status so a cold session starts deploy from current development.
 - `d23b521` — Start the Phase 13 deploy handoff so a cold session can track personal GitHub and Vercel.
 - `cc4c15c` — Record the personal GitHub remote and Neon migrate so deploy can push without inventing origin.
+- `109859d` — Keep main as production and development as preview so Vercel matches owner intent.
+- Merge: `feat/13-deploy` → `development` (FF) → `main` (FF) at `109859d`. Pushed origin `feat/13-deploy`, `development`, `main`. No force.
 
 ## Files touched
 
@@ -28,7 +30,7 @@
 - `.env.example` lists empty keys. `.env.local` is gitignored.
 - Seeds refuse `VERCEL_ENV=production`. Seeds were not run against Neon.
 - `npm run db:migrate` against personal Neon direct URL (no `-pooler`) succeeded (`0000_schema-clock`).
-- Origin pushed: `development`, `feat/13-deploy`, `main`.
+- Origin pushed: `development`, `feat/13-deploy`, `main` at `109859d`. `main` holds the app (no longer specs-only).
 
 ## What is not in this phase
 
@@ -49,7 +51,7 @@
 
 ## Open questions
 
-- Production URL (owner; no secrets in git).
+- Production URL (owner; no secrets in git). After env names are set, Vercel will deploy `main`.
 - Vercel Production **and** Preview env **names**: `DATABASE_URL`, `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`, `AUTH_URL` (production origin, no trailing slash), `AUTH_TRUST_HOST` (`true`), `AUTH_ALLOWLIST_EMAIL`, `CRON_SECRET`. Values never in git.
 - Google OAuth: keep localhost; add production JS origin and `{AUTH_URL}/api/auth/callback/google`.
 - P2-1 remains open.
