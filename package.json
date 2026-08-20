@@ -10,7 +10,8 @@
     "test": "vitest run",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:seed": "tsx scripts/seed-lists.ts"
+    "db:seed": "tsx scripts/seed-lists.ts",
+    "db:seed:stats": "tsx scripts/seed-stats-history.ts"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.11.3",
