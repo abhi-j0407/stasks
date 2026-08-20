@@ -421,6 +421,7 @@ body {
   flex: none;
   align-items: center;
   justify-content: center;
+  gap: var(--space-4);
   min-width: 2.25rem;
   min-height: 28px;
   padding: 4px 10px;
@@ -431,6 +432,24 @@ body {
   font-size: 13px;
   font-weight: var(--font-weight-extrabold);
   line-height: 1.2;
+}
+
+.streak-pill__flame {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 14px;
+  height: 14px;
+}
+
+.streak-pill__flame svg {
+  display: block;
+  width: 14px;
+  height: 14px;
+}
+
+.streak-pill__count {
+  display: block;
 }
 
 .list-screen__title {

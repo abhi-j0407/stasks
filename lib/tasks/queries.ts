@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { withNeonRetry } from "@/lib/db/retry";
 import { completionEvents, tasks } from "@/lib/db/schema";
+import { computeStreak, type Streak } from "@/lib/streak";
 import {
   splitByCategory,
   type TaskCategory,
@@ -83,3 +84,19 @@ export async function listCompletedToday(
   const { personal, work } = splitByCategory(rows);
   return [...personal, ...work];
 }
+
+export const loadStreak = cache(
+  async (userId: string, todayIso: string): Promise<Streak> => {
+    const rows = await withNeonRetry(() =>
+      db
+        .selectDistinct({ logicalDate: completionEvents.logicalDate })
+        .from(completionEvents)
+        .where(eq(completionEvents.userId, userId)),
+    );
+
+    return computeStreak(
+      rows.map((row) => row.logicalDate),
+      todayIso,
+    );
+  },
+);
