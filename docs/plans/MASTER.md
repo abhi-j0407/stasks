@@ -553,16 +553,16 @@ For each missed cut that opens new logical date `T` (closing `T-1`), per user:
 
 - [x] Phase 1: Scaffold
 - [x] Phase 2: Google allowlist auth
-- [ ] Phase 3: Schema and logical clock
-- [ ] Phase 4: Lists
-- [ ] Phase 5: Capture
-- [ ] Phase 6: Reorder
-- [ ] Phase 7: Moves
-- [ ] Phase 8: Complete, undo, delete
-- [ ] Phase 9: Overdue and 04:00 rollover
-- [ ] Phase 10: Planned date, upcoming, 16:00 promote
-- [ ] Phase 11: Streak
-- [ ] Phase 12: Stats
+- [x] Phase 3: Schema and logical clock
+- [x] Phase 4: Lists
+- [x] Phase 5: Capture
+- [x] Phase 6: Reorder
+- [x] Phase 7: Moves
+- [x] Phase 8: Complete, undo, delete
+- [x] Phase 9: Overdue and 04:00 rollover
+- [x] Phase 10: Planned date, upcoming, 16:00 promote
+- [x] Phase 11: Streak
+- [x] Phase 12: Stats
 - [ ] Phase 13: Deploy
 
 ---
