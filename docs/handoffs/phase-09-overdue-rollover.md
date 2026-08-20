@@ -2,7 +2,7 @@
 
 **Objective:** Overdue UI + 04:00 job + catch-up matching PRD §13 and §15 (including §14.4 sweep).
 
-**Branch:** `feat/09-overdue-rollover` (from `development` at `8e59e2d`). Not pushed. `main` remains `5a83247`, frozen specs only.
+**Branch:** `feat/09-overdue-rollover` (fast-forwarded into `development` at `1706805`; `main` remains `5a83247`, frozen specs only). Not pushed.
 
 ## Commits
 
@@ -12,6 +12,7 @@
 - `bcca4a4` — Apply missed 04:00 cuts in order on load so a failed cron cannot freeze yesterday's board.
 - `49843c5` — Record the Phase 9 overdue handoff so a cold session can verify the slice.
 - `4d0643a` — Record the Phase 9 handoff commit hash so a cold session can verify the work.
+- `1706805` — Note the Phase 9 hash-record commit so the handoff lists every commit on the branch.
 
 ## Files touched
 
@@ -78,3 +79,4 @@ npm run dev
 - Owner should put `CRON_SECRET` in gitignored `.env.local` (and Vercel env in Phase 13) before a live cron GET. Ask before inventing a value.
 - Catch-up bootstrap: no `rollover-04` row → insert current T, no list mutations. Avoids treating first-day Today as yesterday. Do not loop from epoch.
 - Do not push. Leave `main` alone. Phase 13 only.
+- `feat/09-overdue-rollover` is fast-forwarded into `development` at `1706805`.
