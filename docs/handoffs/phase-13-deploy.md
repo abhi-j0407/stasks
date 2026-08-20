@@ -2,11 +2,11 @@
 
 **Objective:** Personal GitHub private repo, Vercel Hobby, Neon production, both crons, `development` merged to `main` with owner agreement.
 
-**Branch:** `feat/13-deploy` from `development` at `afb70e3`. `main` remains `5a83247` (frozen specs) until the owner agrees to merge. Production URL: not live yet.
+**Branch:** `feat/13-deploy` from `development` at `afb70e3`. Owner agreed: **`main` = production**, **`development` = preview**. Merge the app to `main` (no force). Do not force-push `main`.
 
-**GitHub:** personal private `https://github.com/abhi-j0407/stasks.git` (SSH origin `git@github.com:abhi-j0407/stasks.git`). Not a company org. Pushed `development`, `feat/13-deploy`, and `main` (no force).
+**GitHub:** personal private [https://github.com/abhi-j0407/stasks.git](https://github.com/abhi-j0407/stasks.git) (SSH `git@github.com:abhi-j0407/stasks.git`). Not a company org.
 
-**Vercel:** Hobby project `stasks` on personal team `abhij0407's projects` (`prj_8JNruPS83pMuAXlDEbLS2H1PpB5p`). Linked to `abhi-j0407/stasks`. Production Branch is still `main` (specs-only) — switch to `development` until the owner agrees to merge the app to `main`. Env names not confirmed on Vercel yet.
+**Vercel:** Hobby project `stasks` on personal team `abhij0407's projects` (`prj_8JNruPS83pMuAXlDEbLS2H1PpB5p`), linked to `abhi-j0407/stasks`. **Production Branch stays `main`.** `development` is preview. Production URL: not confirmed in this file until the owner sends it (no secrets).
 
 ## Commits
 
@@ -16,20 +16,19 @@
 
 ## Files touched
 
-- `docs/handoffs/MASTER.md`, `docs/plans/MASTER.md` — orchestrator Phase 12/13 checkbox catch-up already on the working tree; committed on this branch only
+- `docs/handoffs/MASTER.md`, `docs/plans/MASTER.md` — orchestrator Phase 12/13 checkbox catch-up
 - `docs/handoffs/phase-13-deploy.md` — this file
 - Deploy config confirmed, not rewritten: `vercel.json`, `lib/jobs/cron-auth.ts`, `app/api/cron/rollover/route.ts`, `app/api/cron/promote/route.ts`, `proxy.ts`, `.env.example`, `.gitignore`
 
 ## What works
 
-- Local v1 product slices 1–12 are on `development` / this feat branch.
-- `vercel.json` already registers both Hobby-safe daily crons: rollover `30 22 * * *` → `/api/cron/rollover`; promote `30 10 * * *` → `/api/cron/promote`.
-- Both cron routes require `Authorization: Bearer $CRON_SECRET`. `proxy.ts` excludes `/api`.
-- `.env.example` lists empty keys only. `.env.local` is gitignored.
-- Seeds refuse `VERCEL_ENV=production`.
-- Personal Vercel Hobby team visible to this session is `abhij0407's projects` (no company team selected). No Vercel project named `stasks` yet.
-- `npm run db:migrate` against the personal Neon direct URL (no `-pooler`) succeeded; schema `0000_schema-clock` is applied. Seeds were not run.
-- Origin is `git@github.com:abhi-j0407/stasks.git`. Pushed `development`, `feat/13-deploy`, and `main`.
+- v1 slices 1–12 are on `development` / `feat/13-deploy`.
+- `vercel.json` crons: rollover `30 22 * * *` → `/api/cron/rollover`; promote `30 10 * * *` → `/api/cron/promote`.
+- Cron routes require `Authorization: Bearer $CRON_SECRET`. `proxy.ts` excludes `/api`.
+- `.env.example` lists empty keys. `.env.local` is gitignored.
+- Seeds refuse `VERCEL_ENV=production`. Seeds were not run against Neon.
+- `npm run db:migrate` against personal Neon direct URL (no `-pooler`) succeeded (`0000_schema-clock`).
+- Origin pushed: `development`, `feat/13-deploy`, `main`.
 
 ## What is not in this phase
 
@@ -41,19 +40,16 @@
 
 ## How to verify
 
-1. Personal GitHub private `stasks` exists; `git remote -v` is that origin only.
-2. Vercel Hobby production URL loads. Allowlisted Google reaches `/today`.
-3. Cron Jobs settings show both paths/schedules. Unauthorized cron GET is 401.
-4. `npm run db:migrate` against the personal Neon direct URL is a no-op (or applies only pending SQL). Do not seed.
+1. `git remote -v` is `git@github.com:abhi-j0407/stasks.git` only.
+2. Vercel Production Branch is `main`. Preview deployments come from `development`.
+3. Production URL loads. Allowlisted Google reaches `/today`.
+4. Cron Jobs settings show both paths/schedules. Unauthorized cron GET is 401.
 5. PWA: iPhone Safari Add to Home Screen and Mac. Data persists in Neon across devices.
-6. After owner agreement: `development` is merged into `main` (no force). Vercel Production Branch is `main`.
-7. `git status` does not include `.env.local`.
+6. `git status` does not include `.env.local`.
 
 ## Open questions
 
-- Production URL — after Vercel Hobby import. Vercel Production Branch should be `development` until `main` holds the app.
-- Env **names** on Vercel Production: `DATABASE_URL`, `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`, `AUTH_URL`, `AUTH_TRUST_HOST`, `AUTH_ALLOWLIST_EMAIL`, `CRON_SECRET`. Values never in git or this file.
-- Google OAuth production origin + `{AUTH_URL}/api/auth/callback/google`.
+- Production URL (owner; no secrets in git).
+- Vercel Production **and** Preview env **names**: `DATABASE_URL`, `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`, `AUTH_URL` (production origin, no trailing slash), `AUTH_TRUST_HOST` (`true`), `AUTH_ALLOWLIST_EMAIL`, `CRON_SECRET`. Values never in git.
+- Google OAuth: keep localhost; add production JS origin and `{AUTH_URL}/api/auth/callback/google`.
 - P2-1 remains open.
-- Merge to `main` waits on owner agreement.
-- **Vercel:** Hobby project `stasks` on personal team `abhij0407's projects` (`prj_8JNruPS83pMuAXlDEbLS2H1PpB5p`), linked to `abhi-j0407/stasks`. Owner confirmed that team is the right place. Production Branch still `main` until switched to `development`. Env names and production URL not confirmed yet.
