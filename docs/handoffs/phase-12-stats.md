@@ -2,7 +2,7 @@
 
 **Objective:** Stats screen: streak, 7/30 bars, split, completion rate, overdue count, heatmap.
 
-**Branch:** `feat/12-stats` from `development` at `3e09c1a`. Not merged yet. `main` remains `5a83247`, frozen specs only. Not pushed.
+**Branch:** `feat/12-stats` fast-forwarded into `development` at `987309d`. `main` remains `5a83247`, frozen specs only. Not pushed.
 
 ## Commits
 
@@ -16,6 +16,7 @@
 - `fd1ce9b` — Record the Phase 12 stats handoff so a cold session can verify the slice.
 - `ef73e44` — Record the Phase 12 handoff commit hash so a cold session can verify the work.
 - `3812ed9` — Note the last Phase 12 hash-record commit so the handoff lists every commit on the branch.
+- `987309d` — List the final Phase 12 hash-record commit so the handoff matches git log.
 
 ## Files touched
 
@@ -74,7 +75,7 @@ npm run dev
 
 ## Open questions
 
-- Merge `feat/12-stats` into `development` is waiting on owner agreement. No force. Do not push. Leave `main` alone. Phase 13 only.
+- Merge `feat/12-stats` was fast-forwarded into `development` at `987309d`. Do not push. Leave `main` alone. Phase 13 only.
 - Local `npm run db:seed:stats` skipped on this machine because the allowlisted user already has `completion_events` before today. That skip is correct.
 - P2-1 remains open (not a Phase 12 blocker).
 - `CRON_SECRET` still unset locally — not a Phase 12 blocker.
