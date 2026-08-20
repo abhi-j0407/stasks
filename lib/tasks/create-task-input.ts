@@ -1,4 +1,5 @@
-import type { TaskCategory } from "@/lib/tasks/split-by-category";
+import { parsePlannedDate } from "./planned-date";
+import type { TaskCategory } from "./split-by-category";
 
 export type TaskLocation = "today" | "tomorrow" | "registry";
 
@@ -13,6 +14,7 @@ export type CreateTaskFields = {
   notes: string | null;
   location: TaskLocation;
   category: TaskCategory;
+  plannedDate: string | null;
 };
 
 export type ParseCreateTaskResult =
@@ -42,6 +44,7 @@ export function parseCreateTaskInput(raw: {
   notes?: unknown;
   location?: unknown;
   category?: unknown;
+  plannedDate?: unknown;
 }): ParseCreateTaskResult {
   const location = parseLocation(raw.location);
   const category = parseCategory(raw.category);
@@ -57,7 +60,16 @@ export function parseCreateTaskInput(raw: {
   const notesRaw = asString(raw.notes);
   const notes = notesRaw === null ? null : notesRaw.trim() || null;
 
-  return { ok: true, value: { title, notes, location, category } };
+  let plannedDate: string | null = null;
+  if (location === "registry") {
+    const parsedDate = parsePlannedDate(raw.plannedDate);
+    if (!parsedDate.ok) {
+      return { ok: false, message: SAVE_AGAIN };
+    }
+    plannedDate = parsedDate.value;
+  }
+
+  return { ok: true, value: { title, notes, location, category, plannedDate } };
 }
 
 export function nextSortOrder(maxSort: number | null | undefined): number {

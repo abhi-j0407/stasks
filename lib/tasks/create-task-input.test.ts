@@ -23,6 +23,7 @@ describe("parseCreateTaskInput", () => {
         notes: null,
         location: "today",
         category: "personal",
+        plannedDate: null,
       },
     });
   });
@@ -57,6 +58,47 @@ describe("parseCreateTaskInput", () => {
         category: "personal",
       }),
     ).toEqual({ ok: false, message: TITLE_NEEDED });
+  });
+
+  test("keeps a registry planned date and ignores it on Today", () => {
+    const registry = parseCreateTaskInput({
+      title: "Park it",
+      location: "registry",
+      category: "personal",
+      plannedDate: "2026-08-21",
+    });
+    expect(registry).toEqual({
+      ok: true,
+      value: {
+        title: "Park it",
+        notes: null,
+        location: "registry",
+        category: "personal",
+        plannedDate: "2026-08-21",
+      },
+    });
+
+    const today = parseCreateTaskInput({
+      title: "Do it now",
+      location: "today",
+      category: "work",
+      plannedDate: "2026-08-21",
+    });
+    expect(today.ok).toBe(true);
+    if (today.ok) {
+      expect(today.value.plannedDate).toBe(null);
+    }
+  });
+
+  test("rejects a malformed registry planned date", () => {
+    expect(
+      parseCreateTaskInput({
+        title: "Park it",
+        location: "registry",
+        category: "personal",
+        plannedDate: "Friday",
+      }),
+    ).toEqual({ ok: false, message: SAVE_AGAIN });
   });
 
   test("rejects invalid location or category", () => {

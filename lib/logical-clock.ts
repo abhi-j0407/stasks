@@ -1,5 +1,6 @@
 const TIME_ZONE = "Asia/Kolkata";
 const CUT_HOUR = 4;
+const PROMOTE_HOUR = 16;
 
 const kolkataPartsFormatter = new Intl.DateTimeFormat("en-US", {
   timeZone: TIME_ZONE,
@@ -48,6 +49,11 @@ export function logicalDate(now: Date = new Date()): string {
 
 export function logicalTomorrow(now: Date = new Date()): string {
   return addLogicalDays(logicalDate(now), 1);
+}
+
+export function isPromoteDue(now: Date = new Date()): boolean {
+  const hour = Number(part(kolkataPartsFormatter.formatToParts(now), "hour"));
+  return hour >= PROMOTE_HOUR || hour < CUT_HOUR;
 }
 
 const captionFormatter = new Intl.DateTimeFormat("en-GB", {

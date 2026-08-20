@@ -20,6 +20,7 @@ export type TaskRowData = {
   category: TaskCategory;
   location: TaskLocation;
   overdue: boolean;
+  plannedDate: string | null;
 };
 
 export const requireUserId = cache(async () => {
@@ -38,6 +39,7 @@ const taskRowColumns = {
   category: tasks.category,
   location: tasks.location,
   overdue: tasks.overdue,
+  plannedDate: tasks.plannedDate,
 };
 
 export async function listIncomplete(

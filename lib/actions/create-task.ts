@@ -5,14 +5,14 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { withNeonRetry } from "@/lib/db/retry";
 import { tasks } from "@/lib/db/schema";
-import { logicalDate } from "@/lib/logical-clock";
+import { isPromoteDue, logicalDate } from "@/lib/logical-clock";
 import { recordTodayOccupancy } from "@/lib/occupancy";
 import {
   nextSortOrder,
   parseCreateTaskInput,
   SAVE_AGAIN,
-  shouldRecordTodayOccupancy,
 } from "@/lib/tasks/create-task-input";
+import { resolveCreatePlacement } from "@/lib/tasks/planned-date";
 import { requireUserId } from "@/lib/tasks/queries";
 
 const LIST_PATH = {
@@ -35,13 +35,22 @@ export async function createTask(
     notes: formData.get("notes"),
     location: formData.get("location"),
     category: formData.get("category"),
+    plannedDate: formData.get("plannedDate"),
   });
 
   if (!parsed.ok) {
     return parsed;
   }
 
-  const { title, notes, location, category } = parsed.value;
+  const { title, notes, location, category, plannedDate } = parsed.value;
+  const now = new Date();
+  const t = logicalDate(now);
+  const placement = resolveCreatePlacement({
+    requestedLocation: location,
+    plannedDate,
+    t,
+    promoteDue: isPromoteDue(now),
+  });
 
   try {
     const [row] = await withNeonRetry(() =>
@@ -51,7 +60,7 @@ export async function createTask(
         .where(
           and(
             eq(tasks.userId, userId),
-            eq(tasks.location, location),
+            eq(tasks.location, placement.location),
             eq(tasks.category, category),
           ),
         ),
@@ -64,11 +73,11 @@ export async function createTask(
           userId,
           title,
           notes,
-          location,
+          location: placement.location,
           category,
           sortOrder: nextSortOrder(row?.maxSort ?? null),
           overdue: false,
-          plannedDate: null,
+          plannedDate: placement.plannedDate,
           completedAt: null,
         })
         .returning({ id: tasks.id }),
@@ -78,11 +87,11 @@ export async function createTask(
       return { ok: false, message: SAVE_AGAIN };
     }
 
-    if (shouldRecordTodayOccupancy(location)) {
+    if (placement.recordOccupancy) {
       await recordTodayOccupancy({
         userId,
         taskId: created.id,
-        logicalDate: logicalDate(),
+        logicalDate: t,
       });
     }
   } catch {
@@ -90,5 +99,8 @@ export async function createTask(
   }
 
   revalidatePath(LIST_PATH[location]);
+  if (placement.location !== location) {
+    revalidatePath(LIST_PATH[placement.location]);
+  }
   return { ok: true };
 }

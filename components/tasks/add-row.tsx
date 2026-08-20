@@ -14,11 +14,13 @@ export function AddRow({ category, location }: AddRowProps) {
   const titleRef = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState("");
   const [notes, setNotes] = useState("");
+  const [plannedDate, setPlannedDate] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const placeholder =
     category === "personal" ? "Add a personal task" : "Add a work task";
-  const showNotes = title.trim().length > 0;
+  const showExtra = title.trim().length > 0;
+  const showPlannedDate = location === "registry" && showExtra;
 
   function handleAction(formData: FormData) {
     const trimmed = String(formData.get("title") ?? "").trim();
@@ -26,9 +28,10 @@ export function AddRow({ category, location }: AddRowProps) {
       return;
     }
 
-    const snapshot = { title, notes };
+    const snapshot = { title, notes, plannedDate };
     setTitle("");
     setNotes("");
+    setPlannedDate("");
     setError(null);
 
     startTransition(async () => {
@@ -37,6 +40,9 @@ export function AddRow({ category, location }: AddRowProps) {
       if (!result.ok) {
         setTitle((current) => (current === "" ? snapshot.title : current));
         setNotes((current) => (current === "" ? snapshot.notes : current));
+        setPlannedDate((current) =>
+          current === "" ? snapshot.plannedDate : current,
+        );
         setError(result.message);
       }
 
@@ -72,17 +78,29 @@ export function AddRow({ category, location }: AddRowProps) {
         aria-describedby={error ? errorId : undefined}
         enterKeyHint="done"
       />
-      {showNotes ? (
-        <input
-          className="add-row__input add-row__notes"
-          type="text"
-          name="notes"
-          value={notes}
-          onChange={(event) => setNotes(event.target.value)}
-          placeholder="Notes"
-          aria-label="Notes"
-          enterKeyHint="done"
-        />
+      {showExtra ? (
+        <div className="add-row__extra">
+          <input
+            className="add-row__input add-row__notes"
+            type="text"
+            name="notes"
+            value={notes}
+            onChange={(event) => setNotes(event.target.value)}
+            placeholder="Notes"
+            aria-label="Notes"
+            enterKeyHint="done"
+          />
+          {showPlannedDate ? (
+            <input
+              className="add-row__input add-row__date"
+              type="date"
+              name="plannedDate"
+              value={plannedDate}
+              onChange={(event) => setPlannedDate(event.target.value)}
+              aria-label="Planned date"
+            />
+          ) : null}
+        </div>
       ) : null}
       {error ? (
         <p id={errorId} className="add-row__error" aria-live="polite">

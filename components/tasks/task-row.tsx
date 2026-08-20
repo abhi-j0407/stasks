@@ -6,6 +6,7 @@ import type {
   DraggableSyntheticListeners,
 } from "@dnd-kit/core";
 import { TaskRowMoves } from "@/components/tasks/task-row-moves";
+import { formatCaptionDate } from "@/lib/logical-clock";
 import {
   OVERDUE_CHIP,
   overdueChipAria,
@@ -22,6 +23,7 @@ type TaskRowProps = {
   onMove?: (toLocation: TaskLocation) => void;
   onDelete?: () => void;
   onClearOverdue?: (input: { keyboard: boolean }) => void;
+  onPlannedDateChange?: (plannedDate: string | null) => void;
   onToggleComplete?: (input: { keyboard: boolean }) => void;
   handleRef?: (node: HTMLElement | null) => void;
   handleAttributes?: DraggableAttributes;
@@ -38,6 +40,7 @@ export function TaskRow({
   onMove,
   onDelete,
   onClearOverdue,
+  onPlannedDateChange,
   onToggleComplete,
   handleRef,
   handleAttributes,
@@ -50,6 +53,8 @@ export function TaskRow({
   const showOverdue = task.overdue && !completed;
   const canClearOverdue =
     showOverdue && Boolean(onClearOverdue) && !completePending && !movesPending;
+  const showPlannedDate = task.location === "registry" && !completed;
+  const plannedDatePending = completePending || movesPending;
 
   return (
     <article
@@ -121,6 +126,24 @@ export function TaskRow({
       <div className="task-row__body">
         <p className="task-row__title">{task.title}</p>
         {task.notes ? <p className="task-row__notes">{task.notes}</p> : null}
+        {showPlannedDate ? (
+          onPlannedDateChange ? (
+            <input
+              className="task-row__planned-date"
+              type="date"
+              value={task.plannedDate ?? ""}
+              disabled={plannedDatePending}
+              aria-label={`Planned date for ${task.title}`}
+              onChange={(event) => {
+                onPlannedDateChange(event.target.value || null);
+              }}
+            />
+          ) : task.plannedDate ? (
+            <p className="task-row__planned-date-text">
+              {formatCaptionDate(task.plannedDate)}
+            </p>
+          ) : null
+        ) : null}
       </div>
       {showOverdue ? (
         <button

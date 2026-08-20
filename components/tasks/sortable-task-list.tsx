@@ -43,6 +43,7 @@ import { completeTask } from "@/lib/actions/complete-task";
 import { deleteTask, restoreDeletedTask } from "@/lib/actions/delete-task";
 import { moveTask } from "@/lib/actions/move-task";
 import { reorderTasks } from "@/lib/actions/reorder-tasks";
+import { updatePlannedDate } from "@/lib/actions/update-planned-date";
 import { COMPLETE_TOAST } from "@/lib/tasks/complete-task";
 import { DELETE_TOAST } from "@/lib/tasks/delete-task";
 import type { TaskLocation, TaskRowData } from "@/lib/tasks/queries";
@@ -288,6 +289,33 @@ export function SortableTaskList({ tasks, location }: SortableTaskListProps) {
     });
   }
 
+  function handlePlannedDateChange(taskId: string, plannedDate: string | null) {
+    if (activeId || completingId) {
+      return;
+    }
+
+    const current = items.find((task) => task.id === taskId);
+    if (!current || current.plannedDate === plannedDate) {
+      return;
+    }
+
+    const next = items.map((task) =>
+      task.id === taskId ? { ...task, plannedDate } : task,
+    );
+    setError(null);
+    startTransition(async () => {
+      setOptimisticTasks(next);
+      const result = await updatePlannedDate({ taskId, plannedDate });
+      if (!result.ok) {
+        setError(result.message);
+        return;
+      }
+      if (result.location !== "registry") {
+        setOptimisticTasks(next.filter((task) => task.id !== taskId));
+      }
+    });
+  }
+
   return (
     <ActivationContext.Provider value={activation}>
       <DndContext
@@ -319,6 +347,7 @@ export function SortableTaskList({ tasks, location }: SortableTaskListProps) {
             onMove={handleLocationMove}
             onDelete={handleDelete}
             onClearOverdue={handleClearOverdue}
+            onPlannedDateChange={handlePlannedDateChange}
             onToggleComplete={handleToggleComplete}
           />
           <CategorySection
@@ -330,6 +359,7 @@ export function SortableTaskList({ tasks, location }: SortableTaskListProps) {
             onMove={handleLocationMove}
             onDelete={handleDelete}
             onClearOverdue={handleClearOverdue}
+            onPlannedDateChange={handlePlannedDateChange}
             onToggleComplete={handleToggleComplete}
           />
         </div>
@@ -352,6 +382,7 @@ type CategorySectionProps = {
   onMove: (taskId: string, toLocation: TaskLocation) => void;
   onDelete: (taskId: string) => void;
   onClearOverdue: (taskId: string) => void;
+  onPlannedDateChange: (taskId: string, plannedDate: string | null) => void;
   onToggleComplete: (taskId: string, keyboard: boolean) => void;
 };
 
@@ -389,6 +420,7 @@ function CategorySection({
   onMove,
   onDelete,
   onClearOverdue,
+  onPlannedDateChange,
   onToggleComplete,
 }: CategorySectionProps) {
   const { setNodeRef } = useDroppable({ id: category });
@@ -424,6 +456,7 @@ function CategorySection({
                 onMove={onMove}
                 onDelete={onDelete}
                 onClearOverdue={onClearOverdue}
+                onPlannedDateChange={onPlannedDateChange}
                 onToggleComplete={onToggleComplete}
               />
             ))}
@@ -442,6 +475,7 @@ function SortableTaskRow({
   onMove,
   onDelete,
   onClearOverdue,
+  onPlannedDateChange,
   onToggleComplete,
 }: {
   task: TaskRowData;
@@ -450,6 +484,7 @@ function SortableTaskRow({
   onMove: (taskId: string, toLocation: TaskLocation) => void;
   onDelete: (taskId: string) => void;
   onClearOverdue: (taskId: string) => void;
+  onPlannedDateChange: (taskId: string, plannedDate: string | null) => void;
   onToggleComplete: (taskId: string, keyboard: boolean) => void;
 }) {
   const activation = useContext(ActivationContext);
@@ -491,6 +526,9 @@ function SortableTaskRow({
         onMove={(toLocation) => onMove(task.id, toLocation)}
         onDelete={() => onDelete(task.id)}
         onClearOverdue={() => onClearOverdue(task.id)}
+        onPlannedDateChange={(plannedDate) =>
+          onPlannedDateChange(task.id, plannedDate)
+        }
         onToggleComplete={({ keyboard }) =>
           onToggleComplete(task.id, keyboard)
         }

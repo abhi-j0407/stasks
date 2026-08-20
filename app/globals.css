@@ -713,6 +713,42 @@ button.task-row__handle:focus-visible {
   white-space: nowrap;
 }
 
+.task-row__planned-date-text {
+  margin: var(--space-4) 0 0;
+  color: var(--color-wolf);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-caption);
+}
+
+.task-row__planned-date {
+  display: block;
+  width: 9.75rem;
+  min-height: 44px;
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-wolf);
+  font: inherit;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-caption);
+  outline: none;
+  animation: none;
+  transition: none;
+  color-scheme: light;
+}
+
+.task-row__planned-date:focus-visible {
+  outline: 3px solid var(--color-macaw);
+  outline-offset: 2px;
+}
+
+.task-row__planned-date:disabled {
+  cursor: not-allowed;
+}
+
 .task-row__overdue-chip {
   display: grid;
   flex: none;
@@ -876,10 +912,29 @@ button.task-row__handle:focus-visible {
   color: var(--color-hare);
 }
 
+.add-row__extra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8);
+}
+
 .add-row__notes {
+  flex: 1 1 8rem;
+  min-width: 0;
   color: var(--color-eel);
   font-size: var(--font-size-caption);
   line-height: var(--leading-caption);
+}
+
+.add-row__date {
+  flex: none;
+  width: 9.75rem;
+  min-height: 44px;
+  color: var(--color-wolf);
+  font-size: var(--font-size-caption);
+  line-height: var(--leading-caption);
+  color-scheme: light;
 }
 
 .add-row__error {
