@@ -6,6 +6,7 @@ export type ToastInput = {
   actionLabel?: string;
   durationMs?: number;
   onAction?: () => void;
+  streakTick?: boolean;
 };
 
 export type ToastItem = {
@@ -15,6 +16,7 @@ export type ToastItem = {
   actionLabel?: string;
   durationMs: number;
   onAction?: () => void;
+  streakTick?: boolean;
 };
 
 let toasts: ToastItem[] = [];
@@ -37,6 +39,7 @@ export function toast(input: ToastInput): string {
       actionLabel: input.actionLabel,
       durationMs: input.durationMs ?? 3000,
       onAction: input.onAction,
+      streakTick: input.streakTick,
     },
   ];
   emit();

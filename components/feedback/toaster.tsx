@@ -56,7 +56,14 @@ function ToastCard({ toast: item }: { toast: ToastItem }) {
 
   return (
     <div className={className} role="status">
-      <p className="toast__message">{item.message}</p>
+      <div className="toast__copy">
+        <p className="toast__message">{item.message}</p>
+        {item.streakTick ? (
+          <span className="toast__streak-tick" aria-hidden="true">
+            +1
+          </span>
+        ) : null}
+      </div>
       {item.actionLabel && item.onAction ? (
         <button
           type="button"

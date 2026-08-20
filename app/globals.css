@@ -1352,6 +1352,24 @@ button.task-row__handle:focus-visible {
   line-height: var(--leading-body);
 }
 
+.toast__copy {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.toast__streak-tick {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  color: inherit;
+  font-size: 13px;
+  font-weight: var(--font-weight-extrabold);
+  line-height: 1.2;
+  animation: streak-tick var(--motion-celebrate) var(--ease-bounce-celebrate);
+}
+
 .toast__action {
   margin: 0;
   padding: 0;
@@ -1417,6 +1435,11 @@ button.task-row__handle:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .toast {
     transform: none;
+  }
+
+  .toast__streak-tick {
+    animation-name: streak-fade;
+    animation-timing-function: var(--ease-out-strong);
   }
 
   @starting-style {

@@ -45,7 +45,7 @@ import { deleteTask, restoreDeletedTask } from "@/lib/actions/delete-task";
 import { moveTask } from "@/lib/actions/move-task";
 import { reorderTasks } from "@/lib/actions/reorder-tasks";
 import { updatePlannedDate } from "@/lib/actions/update-planned-date";
-import { celebrationKind } from "@/lib/streak";
+import { celebrationKind, STREAK_TOAST } from "@/lib/streak";
 import { COMPLETE_TOAST } from "@/lib/tasks/complete-task";
 import { DELETE_TOAST } from "@/lib/tasks/delete-task";
 import type { TaskLocation, TaskRowData } from "@/lib/tasks/queries";
@@ -202,6 +202,14 @@ export function SortableTaskList({
         current: result.current,
         play: celebrationKind(result.firstOfDay, result.current),
       });
+      if (result.firstOfDay) {
+        toast({
+          message: STREAK_TOAST,
+          tone: "complete",
+          streakTick: true,
+        });
+        return;
+      }
       toast({ message: COMPLETE_TOAST, tone: "complete" });
     });
   }
