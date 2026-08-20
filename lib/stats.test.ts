@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
 import { addLogicalDays } from "./logical-clock";
 import {
+  assembleWindow,
   completedTaskIdsByDay,
   countByDay,
   DAYS_7,
@@ -169,6 +170,31 @@ describe("rateByDay", () => {
     );
 
     expect(days[0]).toEqual({ date: T, completed: 1, sat: 3, rate: 1 / 3 });
+  });
+});
+
+describe("assembleWindow", () => {
+  test("totals 7-day counts including registry completions that do not sit on Today", () => {
+    const events = [
+      event(T, "sat", "personal"),
+      event(T, "registry-only", "work"),
+    ];
+    const window = assembleWindow(
+      events,
+      [{ logicalDate: T, taskId: "sat" }],
+      T,
+      DAYS_7,
+    );
+
+    expect(window.total).toBe(2);
+    expect(window.split).toEqual({ personal: 1, work: 1 });
+    expect(window.counts.at(-1)?.count).toBe(2);
+    expect(window.rates.at(-1)).toEqual({
+      date: T,
+      completed: 1,
+      sat: 1,
+      rate: 1,
+    });
   });
 });
 

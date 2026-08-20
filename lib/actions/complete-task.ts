@@ -32,6 +32,7 @@ function revalidateLists(location: keyof typeof LIST_PATH) {
     revalidatePath("/today");
   }
   revalidatePath("/", "layout");
+  revalidatePath("/stats");
 }
 
 async function hasCompletionOn(userId: string, day: string): Promise<boolean> {

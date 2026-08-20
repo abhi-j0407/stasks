@@ -1,11 +1,20 @@
 import { cache } from "react";
-import { and, asc, eq, isNull } from "drizzle-orm";
+import { and, asc, count, eq, gte, isNull } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { withNeonRetry } from "@/lib/db/retry";
-import { completionEvents, tasks } from "@/lib/db/schema";
+import { completionEvents, tasks, todayOccupancy } from "@/lib/db/schema";
 import { computeStreak, type Streak } from "@/lib/streak";
+import {
+  assembleStatsSnapshot,
+  DAYS_30,
+  heatmapRange,
+  windowStart,
+  type CompletionEventRow,
+  type OccupancyRow,
+  type StatsSnapshot,
+} from "@/lib/stats";
 import {
   splitByCategory,
   type TaskCategory,
@@ -98,5 +107,77 @@ export const loadStreak = cache(
       rows.map((row) => row.logicalDate),
       todayIso,
     );
+  },
+);
+
+function asCategory(value: string | null): TaskCategory | null {
+  return value === "personal" || value === "work" ? value : null;
+}
+
+export const loadStats = cache(
+  async (userId: string, todayIso: string): Promise<StatsSnapshot> => {
+    const { start: heatmapStart } = heatmapRange(todayIso);
+    const occupancyStart = windowStart(todayIso, DAYS_30);
+
+    const [streak, eventRows, occupancyRows, overdueRows] = await Promise.all([
+      loadStreak(userId, todayIso),
+      withNeonRetry(() =>
+        db
+          .select({
+            logicalDate: completionEvents.logicalDate,
+            taskId: completionEvents.taskId,
+            category: tasks.category,
+          })
+          .from(completionEvents)
+          .leftJoin(tasks, eq(tasks.id, completionEvents.taskId))
+          .where(
+            and(
+              eq(completionEvents.userId, userId),
+              gte(completionEvents.logicalDate, heatmapStart),
+            ),
+          ),
+      ),
+      withNeonRetry(() =>
+        db
+          .select({
+            logicalDate: todayOccupancy.logicalDate,
+            taskId: todayOccupancy.taskId,
+          })
+          .from(todayOccupancy)
+          .where(
+            and(
+              eq(todayOccupancy.userId, userId),
+              gte(todayOccupancy.logicalDate, occupancyStart),
+            ),
+          ),
+      ),
+      withNeonRetry(() =>
+        db
+          .select({ value: count() })
+          .from(tasks)
+          .where(
+            and(
+              eq(tasks.userId, userId),
+              isNull(tasks.completedAt),
+              eq(tasks.overdue, true),
+            ),
+          ),
+      ),
+    ]);
+
+    const events: CompletionEventRow[] = eventRows.map((row) => ({
+      logicalDate: row.logicalDate,
+      taskId: row.taskId,
+      category: asCategory(row.category),
+    }));
+    const occupancy: OccupancyRow[] = occupancyRows;
+
+    return assembleStatsSnapshot({
+      todayIso,
+      streak,
+      events,
+      occupancy,
+      overdueCount: Number(overdueRows[0]?.value ?? 0),
+    });
   },
 );

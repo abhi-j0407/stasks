@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
-import { PlaceholderScreen } from "../placeholder-screen";
+import { StatsScreen } from "@/components/stats/stats-screen";
+import { logicalDate } from "@/lib/logical-clock";
+import { loadStats, requireUserId } from "@/lib/tasks/queries";
 
 export const metadata: Metadata = {
   title: "Stats",
 };
 
-export default function StatsPage() {
-  return (
-    <PlaceholderScreen
-      title="Stats"
-      line="Streaks and heat live here later. For now, the ritual is enough."
-      cta="Keep going"
-    />
-  );
+export default async function StatsPage() {
+  const userId = await requireUserId();
+  const todayIso = logicalDate();
+  const stats = await loadStats(userId, todayIso);
+
+  return <StatsScreen stats={stats} />;
 }

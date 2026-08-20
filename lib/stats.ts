@@ -1,4 +1,5 @@
 import { addLogicalDays } from "./logical-clock";
+import type { Streak } from "./streak";
 import type { TaskCategory } from "./tasks/split-by-category";
 
 export const DAYS_7 = 7;
@@ -60,6 +61,27 @@ export type HeatmapGrid = {
   total: number;
 };
 
+export type WindowStats = {
+  counts: DayCount[];
+  total: number;
+  maxCount: number;
+  split: CategorySplit;
+  rates: DayRate[];
+  completedOnToday: number;
+  satOnToday: number;
+};
+
+export type StatsSnapshot = {
+  todayIso: string;
+  streak: Streak;
+  last7: WindowStats;
+  last30: WindowStats;
+  overdueCount: number;
+  heatmap: HeatmapGrid;
+};
+
+const WEEKDAY_LETTERS = ["M", "T", "W", "T", "F", "S", "S"] as const;
+
 export function windowStart(todayIso: string, days: number): string {
   return addLogicalDays(todayIso, -(days - 1));
 }
@@ -83,6 +105,74 @@ export function weekdayMondayIndex(iso: string): number {
 
 export function mondayOnOrBefore(iso: string): string {
   return addLogicalDays(iso, -weekdayMondayIndex(iso));
+}
+
+export function weekdayLetter(iso: string): string {
+  return WEEKDAY_LETTERS[weekdayMondayIndex(iso)];
+}
+
+export function assembleWindow(
+  events: readonly CompletionEventRow[],
+  occupancy: readonly OccupancyRow[],
+  todayIso: string,
+  days: number,
+): WindowStats {
+  const start = windowStart(todayIso, days);
+  const counts = countByDay(events, start, todayIso);
+  const split = splitCompletions(events, start, todayIso);
+  const { days: rates, completedOnToday, satOnToday } = rateByDay(
+    occupancy,
+    completedTaskIdsByDay(events),
+    start,
+    todayIso,
+  );
+  const total = counts.reduce((sum, day) => sum + day.count, 0);
+  let maxCount = 0;
+  for (const day of counts) {
+    if (day.count > maxCount) {
+      maxCount = day.count;
+    }
+  }
+
+  return {
+    counts,
+    total,
+    maxCount,
+    split,
+    rates,
+    completedOnToday,
+    satOnToday,
+  };
+}
+
+export function assembleStatsSnapshot(input: {
+  todayIso: string;
+  streak: Streak;
+  events: readonly CompletionEventRow[];
+  occupancy: readonly OccupancyRow[];
+  overdueCount: number;
+}): StatsSnapshot {
+  const countsByDay = new Map<string, number>();
+  for (const event of input.events) {
+    countsByDay.set(
+      event.logicalDate,
+      (countsByDay.get(event.logicalDate) ?? 0) + 1,
+    );
+  }
+
+  return {
+    todayIso: input.todayIso,
+    streak: input.streak,
+    last7: assembleWindow(input.events, input.occupancy, input.todayIso, DAYS_7),
+    last30: assembleWindow(
+      input.events,
+      input.occupancy,
+      input.todayIso,
+      DAYS_30,
+    ),
+    overdueCount: input.overdueCount,
+    heatmap: heatmapGrid(input.todayIso, countsByDay),
+  };
 }
 
 export function heatmapRange(todayIso: string): { start: string; gridStart: string } {
