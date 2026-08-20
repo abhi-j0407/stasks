@@ -11,6 +11,7 @@
 - `2ce6e65` — Promote registry items due tomorrow at 16:00 so afternoon planning fills Tomorrow without opening the app.
 - `0c32871` — Catch up the 16:00 promote on load so a missed cron cannot leave tomorrow's list empty.
 - `4d48f63` — Record the Phase 10 planned-promote handoff so a cold session can verify the slice.
+- `1c1adc4` — Record the Phase 10 handoff commit hash so a cold session can verify the work.
 
 ## Files touched
 
