@@ -4,9 +4,12 @@
 
 **Branch:** `feat/13-deploy` from `development` at `afb70e3`. `main` remains `5a83247` (frozen specs) until the owner agrees to merge. Production URL: not live yet.
 
+**GitHub:** personal private `https://github.com/abhi-j0407/stasks.git` (SSH origin `git@github.com:abhi-j0407/stasks.git`). Not a company org.
+
 ## Commits
 
-- (pending — recorded as this phase lands)
+- `f2a98bb` — Record orchestrator Phase 12/13 status so a cold session starts deploy from current development.
+- `d23b521` — Start the Phase 13 deploy handoff so a cold session can track personal GitHub and Vercel.
 
 ## Files touched
 
@@ -22,7 +25,8 @@
 - `.env.example` lists empty keys only. `.env.local` is gitignored.
 - Seeds refuse `VERCEL_ENV=production`.
 - Personal Vercel Hobby team visible to this session is `abhij0407's projects` (no company team selected). No Vercel project named `stasks` yet.
-- Git remote: none yet.
+- `npm run db:migrate` against the personal Neon direct URL (no `-pooler`) succeeded; schema `0000_schema-clock` is applied. Seeds were not run.
+- Owner provided personal GitHub `https://github.com/abhi-j0407/stasks.git`.
 
 ## What is not in this phase
 
@@ -44,8 +48,7 @@
 
 ## Open questions
 
-- Personal GitHub remote URL — owner must create private `stasks` (or confirm `gh` is the personal user) before push.
-- Production URL — after Vercel Hobby import.
+- Production URL — after Vercel Hobby import. Vercel Production Branch should be `development` until `main` holds the app.
 - Env **names** on Vercel Production: `DATABASE_URL`, `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`, `AUTH_URL`, `AUTH_TRUST_HOST`, `AUTH_ALLOWLIST_EMAIL`, `CRON_SECRET`. Values never in git or this file.
 - Google OAuth production origin + `{AUTH_URL}/api/auth/callback/google`.
 - P2-1 remains open.
