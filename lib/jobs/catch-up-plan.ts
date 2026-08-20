@@ -1,4 +1,4 @@
-import { addLogicalDays } from "../logical-clock";
+import { addLogicalDays, isPromoteDue } from "../logical-clock";
 
 export function missingRolloverDates(
   latest: string | null,
@@ -15,4 +15,8 @@ export function missingRolloverDates(
     cursor = addLogicalDays(cursor, 1);
   }
   return dates;
+}
+
+export function shouldRunPromote(now: Date): boolean {
+  return isPromoteDue(now);
 }

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { missingRolloverDates } from "./catch-up-plan";
+import { missingRolloverDates, shouldRunPromote } from "./catch-up-plan";
 
 const T = "2026-08-19";
 
@@ -23,5 +23,31 @@ describe("missingRolloverDates", () => {
   test("is a no-op when already caught up", () => {
     expect(missingRolloverDates(T, T)).toEqual([]);
     expect(missingRolloverDates("2026-08-20", T)).toEqual([]);
+  });
+});
+
+describe("shouldRunPromote", () => {
+  test("15:59 is before the window", () => {
+    expect(shouldRunPromote(new Date("2026-08-18T15:59:00+05:30"))).toBe(
+      false,
+    );
+  });
+
+  test("16:00 is due", () => {
+    expect(shouldRunPromote(new Date("2026-08-18T16:00:00+05:30"))).toBe(
+      true,
+    );
+  });
+
+  test("01:00 next calendar is still logical T after 16:00", () => {
+    expect(shouldRunPromote(new Date("2026-08-19T01:00:00+05:30"))).toBe(
+      true,
+    );
+  });
+
+  test("04:00 is a new T before that day's 16:00", () => {
+    expect(shouldRunPromote(new Date("2026-08-19T04:00:00+05:30"))).toBe(
+      false,
+    );
   });
 });

@@ -2,11 +2,18 @@ import { desc, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { withNeonRetry } from "@/lib/db/retry";
 import { jobRuns } from "@/lib/db/schema";
-import { missingRolloverDates } from "@/lib/jobs/catch-up-plan";
+import {
+  missingRolloverDates,
+  shouldRunPromote,
+} from "@/lib/jobs/catch-up-plan";
+import { runPromote } from "@/lib/jobs/promote";
 import { ROLLOVER_JOB, runRollover } from "@/lib/jobs/rollover";
 import { logicalDate } from "@/lib/logical-clock";
 
-export { missingRolloverDates } from "@/lib/jobs/catch-up-plan";
+export {
+  missingRolloverDates,
+  shouldRunPromote,
+} from "@/lib/jobs/catch-up-plan";
 
 export async function catchUp(now: Date = new Date()) {
   const t = logicalDate(now);
@@ -31,11 +38,14 @@ export async function catchUp(now: Date = new Date()) {
         })
         .onConflictDoNothing(),
     );
-    return { logicalDate: t };
+  } else {
+    for (const next of missingRolloverDates(latestRow.logicalDate, t)) {
+      await runRollover(next);
+    }
   }
 
-  for (const next of missingRolloverDates(latestRow.logicalDate, t)) {
-    await runRollover(next);
+  if (shouldRunPromote(now)) {
+    await runPromote(t);
   }
 
   return { logicalDate: t };
