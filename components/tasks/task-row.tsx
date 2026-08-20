@@ -12,9 +12,11 @@ import {
   overdueChipAria,
 } from "@/lib/tasks/clear-overdue";
 import type { TaskLocation, TaskRowData } from "@/lib/tasks/queries";
+import { isUpcoming, UPCOMING_CHIP } from "@/lib/upcoming";
 
 type TaskRowProps = {
   task: TaskRowData;
+  todayIso?: string;
   completed?: boolean;
   completing?: boolean;
   completePending?: boolean;
@@ -32,6 +34,7 @@ type TaskRowProps = {
 
 export function TaskRow({
   task,
+  todayIso,
   completed = false,
   completing = false,
   completePending = false,
@@ -55,6 +58,14 @@ export function TaskRow({
     showOverdue && Boolean(onClearOverdue) && !completePending && !movesPending;
   const showPlannedDate = task.location === "registry" && !completed;
   const plannedDatePending = completePending || movesPending;
+  const showUpcoming =
+    todayIso != null &&
+    !completed &&
+    isUpcoming({
+      location: task.location,
+      plannedDate: task.plannedDate,
+      t: todayIso,
+    });
 
   return (
     <article
@@ -62,6 +73,7 @@ export function TaskRow({
         "task-row",
         completed ? "task-row--done" : null,
         completing ? "task-row--completing" : null,
+        showUpcoming ? "task-row--upcoming" : null,
         showOverdue ? "task-row--overdue" : null,
       ]
         .filter(Boolean)
@@ -145,6 +157,11 @@ export function TaskRow({
           ) : null
         ) : null}
       </div>
+      {showUpcoming ? (
+        <span className="task-row__upcoming-chip">
+          <span className="task-row__upcoming-pill">{UPCOMING_CHIP}</span>
+        </span>
+      ) : null}
       {showOverdue ? (
         <button
           type="button"

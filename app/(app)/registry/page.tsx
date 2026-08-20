@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { EmptyState } from "@/components/empty-states/empty-state";
 import { TaskList } from "@/components/tasks/task-list";
+import { logicalDate } from "@/lib/logical-clock";
 import { listIncomplete, requireUserId } from "@/lib/tasks/queries";
 
 export const metadata: Metadata = {
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 
 export default async function RegistryPage() {
   const userId = await requireUserId();
+  const todayIso = logicalDate();
   const tasks = await listIncomplete(userId, "registry");
 
   return (
@@ -22,7 +24,7 @@ export default async function RegistryPage() {
           cta="Park it for later."
         />
       ) : null}
-      <TaskList tasks={tasks} location="registry" />
+      <TaskList tasks={tasks} location="registry" todayIso={todayIso} />
     </main>
   );
 }

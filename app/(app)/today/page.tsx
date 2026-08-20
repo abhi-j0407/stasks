@@ -35,7 +35,7 @@ export default async function TodayPage() {
           cta="Keep going."
         />
       ) : null}
-      <TaskList tasks={tasks} location="today" />
+      <TaskList tasks={tasks} location="today" todayIso={todayIso} />
       <CompletedTodayWell tasks={completed} />
     </main>
   );

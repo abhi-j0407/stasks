@@ -586,6 +586,10 @@ button.task-row__handle:focus-visible {
     transform var(--motion-state) var(--ease-out-strong);
 }
 
+.task-row--upcoming {
+  background-color: var(--color-iguana);
+}
+
 .task-row--overdue {
   background-color: var(--color-walking-fish);
 }
@@ -747,6 +751,29 @@ button.task-row__handle:focus-visible {
 
 .task-row__planned-date:disabled {
   cursor: not-allowed;
+}
+
+.task-row__upcoming-chip {
+  display: grid;
+  flex: none;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.task-row__upcoming-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  background-color: var(--color-macaw);
+  color: var(--color-snow);
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: var(--font-weight-extrabold);
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .task-row__overdue-chip {

@@ -76,9 +76,14 @@ const collisionDetection: CollisionDetection = (args) => {
 type SortableTaskListProps = {
   tasks: TaskRowData[];
   location: TaskLocation;
+  todayIso: string;
 };
 
-export function SortableTaskList({ tasks, location }: SortableTaskListProps) {
+export function SortableTaskList({
+  tasks,
+  location,
+  todayIso,
+}: SortableTaskListProps) {
   const [optimisticTasks, setOptimisticTasks] = useOptimistic(tasks);
   const [draft, setDraft] = useState<TaskRowData[] | null>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -342,6 +347,7 @@ export function SortableTaskList({ tasks, location }: SortableTaskListProps) {
             category="personal"
             tasks={personal}
             location={location}
+            todayIso={todayIso}
             completingId={completingId}
             pending={isPending}
             onMove={handleLocationMove}
@@ -354,6 +360,7 @@ export function SortableTaskList({ tasks, location }: SortableTaskListProps) {
             category="work"
             tasks={work}
             location={location}
+            todayIso={todayIso}
             completingId={completingId}
             pending={isPending}
             onMove={handleLocationMove}
@@ -365,7 +372,11 @@ export function SortableTaskList({ tasks, location }: SortableTaskListProps) {
         </div>
         <DragOverlay dropAnimation={snapDrop}>
           {activeTask ? (
-            <OverlayTile task={activeTask} activation={activation} />
+            <OverlayTile
+              task={activeTask}
+              activation={activation}
+              todayIso={todayIso}
+            />
           ) : null}
         </DragOverlay>
       </DndContext>
@@ -377,6 +388,7 @@ type CategorySectionProps = {
   category: TaskCategory;
   tasks: TaskRowData[];
   location: TaskLocation;
+  todayIso: string;
   completingId: string | null;
   pending: boolean;
   onMove: (taskId: string, toLocation: TaskLocation) => void;
@@ -389,9 +401,11 @@ type CategorySectionProps = {
 function OverlayTile({
   task,
   activation,
+  todayIso,
 }: {
   task: TaskRowData;
   activation: Activation | null;
+  todayIso: string;
 }) {
   const { activeNodeRect } = useDndContext();
 
@@ -406,7 +420,7 @@ function OverlayTile({
         activeNodeRect?.width ? { width: activeNodeRect.width } : undefined
       }
     >
-      <TaskRow task={task} />
+      <TaskRow task={task} todayIso={todayIso} />
     </div>
   );
 }
@@ -415,6 +429,7 @@ function CategorySection({
   category,
   tasks,
   location,
+  todayIso,
   completingId,
   pending,
   onMove,
@@ -451,6 +466,7 @@ function CategorySection({
               <SortableTaskRow
                 key={task.id}
                 task={task}
+                todayIso={todayIso}
                 completing={completingId === task.id}
                 pending={pending}
                 onMove={onMove}
@@ -470,6 +486,7 @@ function CategorySection({
 
 function SortableTaskRow({
   task,
+  todayIso,
   completing,
   pending,
   onMove,
@@ -479,6 +496,7 @@ function SortableTaskRow({
   onToggleComplete,
 }: {
   task: TaskRowData;
+  todayIso: string;
   completing: boolean;
   pending: boolean;
   onMove: (taskId: string, toLocation: TaskLocation) => void;
@@ -519,6 +537,7 @@ function SortableTaskRow({
     >
       <TaskRow
         task={task}
+        todayIso={todayIso}
         completing={completing}
         completePending={pending}
         showMoves

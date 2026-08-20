@@ -6,8 +6,15 @@ export { CompletedTodayWell } from "@/components/tasks/completed-today-well";
 type TaskListProps = {
   tasks: TaskRowData[];
   location: TaskLocation;
+  todayIso: string;
 };
 
-export function TaskList({ tasks, location }: TaskListProps) {
-  return <SortableTaskList tasks={tasks} location={location} />;
+export function TaskList({ tasks, location, todayIso }: TaskListProps) {
+  return (
+    <SortableTaskList
+      tasks={tasks}
+      location={location}
+      todayIso={todayIso}
+    />
+  );
 }
