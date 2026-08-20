@@ -12,6 +12,7 @@
 - `0c32871` — Catch up the 16:00 promote on load so a missed cron cannot leave tomorrow's list empty.
 - `4d48f63` — Record the Phase 10 planned-promote handoff so a cold session can verify the slice.
 - `1c1adc4` — Record the Phase 10 handoff commit hash so a cold session can verify the work.
+- `fb66a8c` — Note the Phase 10 hash-record commit so the handoff lists every commit on the branch.
 
 ## Files touched
 
