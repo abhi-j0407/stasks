@@ -1,3 +1,4 @@
+import { Heatmap } from "@/components/stats/heatmap";
 import {
   weekdayLetter,
   type DayCount,
@@ -91,6 +92,8 @@ function RateBars({ rates, dense }: { rates: DayRate[]; dense?: boolean }) {
     </div>
   );
 }
+
+function WindowCard({
   title,
   window,
   dense,
@@ -171,6 +174,7 @@ export function StatsScreen({ stats }: { stats: StatsSnapshot }) {
             : "Missed. Still on the board."}
         </p>
       </section>
+      <Heatmap grid={stats.heatmap} />
     </main>
   );
 }
