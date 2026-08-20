@@ -15,6 +15,7 @@
 - `96738a5` — Add a guarded stats-history seed so bars, split, rate, overdue, and heatmap can be checked against known numbers.
 - `fd1ce9b` — Record the Phase 12 stats handoff so a cold session can verify the slice.
 - `ef73e44` — Record the Phase 12 handoff commit hash so a cold session can verify the work.
+- `3812ed9` — Note the last Phase 12 hash-record commit so the handoff lists every commit on the branch.
 
 ## Files touched
 
