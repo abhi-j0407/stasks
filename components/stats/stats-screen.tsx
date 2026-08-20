@@ -153,6 +153,24 @@ export function StatsScreen({ stats }: { stats: StatsSnapshot }) {
 
       <WindowCard title="Last 7 days" window={stats.last7} />
       <WindowCard title="Last 30 days" window={stats.last30} dense />
+
+      <section className="stats-card stats-card--overdue">
+        <header className="stats-card__head">
+          <h2 className="stats-card__title">Overdue</h2>
+          <span className="task-row__overdue-pill">Overdue</span>
+        </header>
+        <p
+          className="stats-number"
+          aria-label={`${stats.overdueCount} overdue`}
+        >
+          {stats.overdueCount}
+        </p>
+        <p className="stats-card__line">
+          {stats.overdueCount === 0
+            ? "Clear board."
+            : "Missed. Still on the board."}
+        </p>
+      </section>
     </main>
   );
 }

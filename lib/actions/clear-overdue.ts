@@ -54,6 +54,7 @@ export async function clearOverdue(raw: {
     }
 
     revalidatePath(LIST_PATH[updated.location]);
+    revalidatePath("/stats");
     return { ok: true };
   } catch {
     return { ok: false, message: CLEAR_AGAIN };

@@ -1196,6 +1196,10 @@ button.task-row__handle:focus-visible {
   background-color: var(--color-canary);
 }
 
+.stats-card--overdue {
+  background-color: var(--color-walking-fish);
+}
+
 .stats-card__head {
   display: flex;
   align-items: baseline;

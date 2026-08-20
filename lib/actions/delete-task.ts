@@ -34,6 +34,7 @@ function revalidateLists(location: keyof typeof LIST_PATH) {
   if (location !== "today") {
     revalidatePath("/today");
   }
+  revalidatePath("/stats");
 }
 
 function toSnapshot(
