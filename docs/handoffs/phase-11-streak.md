@@ -10,7 +10,7 @@
 - `c0b15ea` — Show the live current streak in the header so every list screen reflects completions instead of a dummy zero.
 - `4a35e01` — Gate streak celebration to the first complete of the day so regular days tick and only 7, 30, and 100 burst.
 - `84f48eb` — Celebrate the first complete of the day with Keep going and a +1 tick so later completes stay a quiet Nice.
-- (this file) — Record the Phase 11 streak handoff so a cold session can verify the slice.
+- `984eb6e` — Record the Phase 11 streak handoff so a cold session can verify the slice.
 
 ## Files touched
 
