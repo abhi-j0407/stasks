@@ -14,7 +14,8 @@
 - `d23b521` — Start the Phase 13 deploy handoff so a cold session can track personal GitHub and Vercel.
 - `cc4c15c` — Record the personal GitHub remote and Neon migrate so deploy can push without inventing origin.
 - `109859d` — Keep main as production and development as preview so Vercel matches owner intent.
-- Merge: `feat/13-deploy` → `development` (FF) → `main` (FF) at `109859d`. Pushed origin `feat/13-deploy`, `development`, `main`. No force.
+- `854e5cf` — Record the main production merge hash so a cold session can verify Phase 13.
+- Merge: `feat/13-deploy` → `development` (FF) → `main` (FF). Pushed origin `feat/13-deploy`, `development`, `main`. No force. Tips at `854e5cf`.
 
 ## Files touched
 
