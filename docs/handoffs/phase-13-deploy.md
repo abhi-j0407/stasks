@@ -4,12 +4,15 @@
 
 **Branch:** `feat/13-deploy` from `development` at `afb70e3`. `main` remains `5a83247` (frozen specs) until the owner agrees to merge. Production URL: not live yet.
 
-**GitHub:** personal private `https://github.com/abhi-j0407/stasks.git` (SSH origin `git@github.com:abhi-j0407/stasks.git`). Not a company org.
+**GitHub:** personal private `https://github.com/abhi-j0407/stasks.git` (SSH origin `git@github.com:abhi-j0407/stasks.git`). Not a company org. Pushed `development`, `feat/13-deploy`, and `main` (no force).
+
+**Vercel:** Hobby project `stasks` on personal team `abhij0407's projects` (`prj_8JNruPS83pMuAXlDEbLS2H1PpB5p`). Linked to `abhi-j0407/stasks`. Production Branch is still `main` (specs-only) — switch to `development` until the owner agrees to merge the app to `main`. Env names not confirmed on Vercel yet.
 
 ## Commits
 
 - `f2a98bb` — Record orchestrator Phase 12/13 status so a cold session starts deploy from current development.
 - `d23b521` — Start the Phase 13 deploy handoff so a cold session can track personal GitHub and Vercel.
+- `cc4c15c` — Record the personal GitHub remote and Neon migrate so deploy can push without inventing origin.
 
 ## Files touched
 
@@ -26,7 +29,7 @@
 - Seeds refuse `VERCEL_ENV=production`.
 - Personal Vercel Hobby team visible to this session is `abhij0407's projects` (no company team selected). No Vercel project named `stasks` yet.
 - `npm run db:migrate` against the personal Neon direct URL (no `-pooler`) succeeded; schema `0000_schema-clock` is applied. Seeds were not run.
-- Owner provided personal GitHub `https://github.com/abhi-j0407/stasks.git`.
+- Origin is `git@github.com:abhi-j0407/stasks.git`. Pushed `development`, `feat/13-deploy`, and `main`.
 
 ## What is not in this phase
 
@@ -53,3 +56,4 @@
 - Google OAuth production origin + `{AUTH_URL}/api/auth/callback/google`.
 - P2-1 remains open.
 - Merge to `main` waits on owner agreement.
+- **Vercel:** Hobby project `stasks` on personal team `abhij0407's projects` (`prj_8JNruPS83pMuAXlDEbLS2H1PpB5p`), linked to `abhi-j0407/stasks`. Owner confirmed that team is the right place. Production Branch still `main` until switched to `development`. Env names and production URL not confirmed yet.
