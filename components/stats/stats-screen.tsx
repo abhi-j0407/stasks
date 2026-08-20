@@ -1,6 +1,7 @@
 import {
   weekdayLetter,
   type DayCount,
+  type DayRate,
   type StatsSnapshot,
   type WindowStats,
 } from "@/lib/stats";
@@ -66,7 +67,30 @@ function CountBars({
   );
 }
 
-function WindowCard({
+function RateBars({ rates, dense }: { rates: DayRate[]; dense?: boolean }) {
+  return (
+    <div className={dense ? "stats-bars stats-bars--dense" : "stats-bars"}>
+      {rates.map((day) => {
+        const label =
+          day.sat === 0
+            ? `${day.date}, nothing sat on Today`
+            : `${day.date}, ${day.completed} of ${day.sat} on Today`;
+        return (
+          <div key={day.date} className="stats-bars__day">
+            <div className="stats-bar" role="img" aria-label={label}>
+              {day.rate === null ? null : (
+                <span
+                  className="stats-bar__fill"
+                  style={{ width: `${day.rate * 100}%` }}
+                />
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
   title,
   window,
   dense,
@@ -82,6 +106,15 @@ function WindowCard({
         <p className="stats-number">{window.total}</p>
       </header>
       <CountBars counts={window.counts} maxCount={window.maxCount} dense={dense} />
+      <p className="stats-card__caption">On Today</p>
+      <RateBars rates={window.rates} dense={dense} />
+      <p className="stats-rate-summary">
+        <span className="stats-number">{window.completedOnToday}</span>
+        <span className="stats-rate-summary__of">
+          {" "}
+          / {window.satOnToday} on Today
+        </span>
+      </p>
       <div className="stats-split">
         <p className="stats-split__item stats-split__item--personal">
           <span className="stats-split__label">Personal</span>

@@ -1288,6 +1288,28 @@ button.task-row__handle:focus-visible {
   text-align: center;
 }
 
+.stats-card__caption {
+  margin: var(--space-12) 0 var(--space-8);
+  color: var(--color-wolf);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-caption);
+}
+
+.stats-rate-summary {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+  margin: var(--space-12) 0 0;
+}
+
+.stats-rate-summary__of {
+  color: var(--color-wolf);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-body);
+}
+
 .stats-split {
   display: grid;
   grid-template-columns: 1fr 1fr;
