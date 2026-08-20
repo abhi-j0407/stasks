@@ -36,6 +36,7 @@ import {
   useTransition,
 } from "react";
 import { toast } from "@/components/feedback/toast-store";
+import { setStreak } from "@/components/nav/streak-store";
 import { AddRow } from "@/components/tasks/add-row";
 import { TaskRow } from "@/components/tasks/task-row";
 import { clearOverdue } from "@/lib/actions/clear-overdue";
@@ -44,6 +45,7 @@ import { deleteTask, restoreDeletedTask } from "@/lib/actions/delete-task";
 import { moveTask } from "@/lib/actions/move-task";
 import { reorderTasks } from "@/lib/actions/reorder-tasks";
 import { updatePlannedDate } from "@/lib/actions/update-planned-date";
+import { celebrationKind } from "@/lib/streak";
 import { COMPLETE_TOAST } from "@/lib/tasks/complete-task";
 import { DELETE_TOAST } from "@/lib/tasks/delete-task";
 import type { TaskLocation, TaskRowData } from "@/lib/tasks/queries";
@@ -196,6 +198,10 @@ export function SortableTaskList({
         setError(result.message);
         return;
       }
+      setStreak({
+        current: result.current,
+        play: celebrationKind(result.firstOfDay, result.current),
+      });
       toast({ message: COMPLETE_TOAST, tone: "complete" });
     });
   }

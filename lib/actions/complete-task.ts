@@ -14,7 +14,7 @@ import {
   UNDO_AGAIN,
   UNDO_CLOSED,
 } from "@/lib/tasks/complete-task";
-import { requireUserId } from "@/lib/tasks/queries";
+import { loadStreak, requireUserId } from "@/lib/tasks/queries";
 
 const LIST_PATH = {
   today: "/today",
@@ -23,7 +23,7 @@ const LIST_PATH = {
 } as const;
 
 export type CompleteTaskResult =
-  | { ok: true }
+  | { ok: true; current: number; firstOfDay: boolean }
   | { ok: false; message: string };
 
 function revalidateLists(location: keyof typeof LIST_PATH) {
@@ -31,6 +31,23 @@ function revalidateLists(location: keyof typeof LIST_PATH) {
   if (location !== "today") {
     revalidatePath("/today");
   }
+  revalidatePath("/", "layout");
+}
+
+async function hasCompletionOn(userId: string, day: string): Promise<boolean> {
+  const rows = await withNeonRetry(() =>
+    db
+      .select({ taskId: completionEvents.taskId })
+      .from(completionEvents)
+      .where(
+        and(
+          eq(completionEvents.userId, userId),
+          eq(completionEvents.logicalDate, day),
+        ),
+      )
+      .limit(1),
+  );
+  return rows.length > 0;
 }
 
 export async function completeTask(raw: {
@@ -69,6 +86,8 @@ export async function completeTask(raw: {
       return { ok: false, message: COMPLETE_AGAIN };
     }
 
+    const alreadyToday = hasCompletionOn(userId, day);
+
     const [updated] = await withNeonRetry(() =>
       db
         .update(tasks)
@@ -94,6 +113,8 @@ export async function completeTask(raw: {
       return { ok: false, message: COMPLETE_AGAIN };
     }
 
+    const firstOfDay = !(await alreadyToday);
+
     try {
       await withNeonRetry(() =>
         db.insert(completionEvents).values({
@@ -117,8 +138,9 @@ export async function completeTask(raw: {
       return { ok: false, message: COMPLETE_AGAIN };
     }
 
+    const { current } = await loadStreak(userId, day);
     revalidateLists(updated.location);
-    return { ok: true };
+    return { ok: true, current, firstOfDay };
   } catch {
     return { ok: false, message: COMPLETE_AGAIN };
   }
@@ -195,7 +217,8 @@ export async function undoComplete(raw: {
     );
 
     revalidateLists(row.location);
-    return { ok: true };
+    const { current } = await loadStreak(userId, day);
+    return { ok: true, current, firstOfDay: false };
   } catch {
     return { ok: false, message: UNDO_AGAIN };
   }

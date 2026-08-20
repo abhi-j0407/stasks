@@ -2,6 +2,7 @@
 
 import { useOptimistic, useState, useTransition } from "react";
 import { toast } from "@/components/feedback/toast-store";
+import { setStreak } from "@/components/nav/streak-store";
 import { TaskRow } from "@/components/tasks/task-row";
 import { undoComplete } from "@/lib/actions/complete-task";
 import { deleteTask, restoreDeletedTask } from "@/lib/actions/delete-task";
@@ -34,7 +35,9 @@ export function CompletedTodayWell({ tasks }: CompletedTodayWellProps) {
       const result = await undoComplete({ taskId });
       if (!result.ok) {
         setError(result.message);
+        return;
       }
+      setStreak({ current: result.current, play: "none" });
     });
   }
 

@@ -89,6 +89,7 @@
   --motion-press: 150ms;
   --motion-state: 200ms;
   --motion-celebrate: 400ms;
+  --motion-celebrate-milestone: 600ms;
   --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out-move: cubic-bezier(0.77, 0, 0.175, 1);
   --ease-bounce-celebrate: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -102,6 +103,7 @@
     --motion-press: 150ms;
     --motion-state: 200ms;
     --motion-celebrate: 200ms;
+    --motion-celebrate-milestone: 200ms;
     --ease-bounce-celebrate: var(--ease-out-strong);
   }
 }
@@ -417,6 +419,7 @@ body {
 }
 
 .app-header__streak {
+  position: relative;
   display: inline-flex;
   flex: none;
   align-items: center;
@@ -426,6 +429,7 @@ body {
   min-height: 28px;
   padding: 4px 10px;
   margin: 0;
+  overflow: visible;
   background-color: var(--color-canary);
   border-radius: var(--radius-pill);
   color: var(--color-fox);
@@ -434,9 +438,17 @@ body {
   line-height: 1.2;
 }
 
-.streak-pill__flame {
+.streak-pill__mark {
+  position: relative;
   display: grid;
   flex: none;
+  place-items: center;
+  width: 14px;
+  height: 14px;
+}
+
+.streak-pill__flame {
+  display: grid;
   place-items: center;
   width: 14px;
   height: 14px;
@@ -450,6 +462,81 @@ body {
 
 .streak-pill__count {
   display: block;
+}
+
+.streak-pill__count--tick {
+  animation: streak-tick var(--motion-celebrate) var(--ease-bounce-celebrate);
+}
+
+.streak-pill__count--milestone {
+  animation: streak-tick var(--motion-celebrate-milestone)
+    var(--ease-bounce-celebrate);
+}
+
+@keyframes streak-tick {
+  from {
+    transform: scale(0.96);
+  }
+
+  55% {
+    transform: scale(1.12);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+.streak-pill__burst {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.streak-pill__spark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  border-radius: var(--radius-pill);
+  animation: streak-spark var(--motion-celebrate-milestone)
+    var(--ease-out-strong) forwards;
+}
+
+@keyframes streak-spark {
+  from {
+    opacity: 1;
+    transform: translate(0, 0) scale(0.96);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate(var(--spark-x), var(--spark-y)) scale(1);
+  }
+}
+
+@keyframes streak-fade {
+  from {
+    opacity: 0.35;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .streak-pill__count--tick,
+  .streak-pill__count--milestone {
+    animation-name: streak-fade;
+    animation-timing-function: var(--ease-out-strong);
+  }
+
+  .streak-pill__burst {
+    display: none;
+  }
 }
 
 .list-screen__title {
