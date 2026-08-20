@@ -13,6 +13,7 @@
 - `4715d24` — Show the current overdue count from incomplete rows so misses stay visible without shame.
 - `59905bf` — Render a Monday-start year heatmap so completion heat matches DESIGN.md, not a metric grid.
 - `96738a5` — Add a guarded stats-history seed so bars, split, rate, overdue, and heatmap can be checked against known numbers.
+- `fd1ce9b` — Record the Phase 12 stats handoff so a cold session can verify the slice.
 
 ## Files touched
 
