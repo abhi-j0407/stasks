@@ -2,7 +2,7 @@
 
 **Objective:** Planned date on registry, derived upcoming, PRD §14.3 immediate rules, 16:00 promote, catch-up.
 
-**Branch:** `feat/10-planned-promote` (from `development` at `ff83a5c`). `main` remains `5a83247`, frozen specs only. Not pushed. Not merged into `development` until the owner agrees.
+**Branch:** `feat/10-planned-promote` (fast-forwarded into `development` at `63673ca`; `main` remains `5a83247`, frozen specs only). Not pushed.
 
 ## Commits
 
@@ -13,6 +13,7 @@
 - `4d48f63` — Record the Phase 10 planned-promote handoff so a cold session can verify the slice.
 - `1c1adc4` — Record the Phase 10 handoff commit hash so a cold session can verify the work.
 - `fb66a8c` — Note the Phase 10 hash-record commit so the handoff lists every commit on the branch.
+- `63673ca` — Note the last Phase 10 hash-record commit so the handoff lists every commit on the branch.
 
 ## Files touched
 
@@ -83,4 +84,4 @@ npm run dev
 - Owner should put `CRON_SECRET` in gitignored `.env.local` (and Vercel env in Phase 13) before a live cron GET. Ask before inventing a value.
 - `isPromoteDue` treats Kolkata hour `< 4` as “16:00 of this logical T has passed” so Friday 01:00 still promotes Thursday’s `D === T+1` instead of waiting for the 04:00 sweep.
 - Do not push. Leave `main` alone. Phase 13 only.
-- Merge `feat/10-planned-promote` into `development` only when the owner agrees (no force).
+- Merge `feat/10-planned-promote` was fast-forwarded into `development` at `63673ca`. Do not push. Leave `main` alone. Phase 13 only.
